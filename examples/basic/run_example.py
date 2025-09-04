@@ -4,17 +4,21 @@ import asyncio
 import getpass
 
 import autogen_core
+from autogen_core import SingleThreadedAgentRuntime
 
 from autogen_agentspeak.bdi import BDIAgent
 
 
-async def main(server, password):
-    a = BDIAgent(f"bdiagent@{server}", password, "basic.asl")
-    await a.start()
+async def main():
+    runtime = SingleThreadedAgentRuntime()
 
-    await asyncio.sleep(1)
+    await BDIAgent.register(
+        runtime, type="TELL", factory=lambda: BDIAgent("test", "basic.asl")
+    )
 
-    a.bdi.set_belief("car", "azul", "big")
+    runtime.start()
+
+    """" a.bdi.set_belief("car", "azul", "big")
     a.bdi.print_beliefs()
     print("GETTING FIRST CAR BELIEF")
     print(a.bdi.get_belief("car"))
@@ -23,7 +27,8 @@ async def main(server, password):
     a.bdi.print_beliefs()
     print(a.bdi.get_beliefs())
     a.bdi.set_belief("car", 'amarillo')
+ """
+    await runtime.stop_when_idle()
 
-    await a.stop()
 
-
+asyncio.run(main())
