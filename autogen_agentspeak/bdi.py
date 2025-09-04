@@ -8,8 +8,7 @@ import agentspeak as asp
 from agentspeak import runtime as asp_runtime, stdlib as asp_stdlib
 from agentspeak.runtime import plan_to_str
 
-from autogen_core import RoutedAgent
-
+from autogen_core import RoutedAgent, message_handler, MessageContext
 
 from loguru import logger
 
@@ -29,6 +28,7 @@ class BDIAgent(RoutedAgent):
     """An AgentSpeak agent in an AutoGen system."""
 
     def __init__(self, descr:str, asl:str):
+        print("Creating a new agent.")
         self.asl_file = asl
         self.bdi_enabled = False # switch on/off BDI behavior
         self.bdi_intention_buffer = deque() # stack-queue of intentions (atoms starting with !)
@@ -355,3 +355,12 @@ def _ask_how(self, term):
                 asp.Literal("source", (asp.Literal(sender_name),))
             )
             self._call_ask_how(sender_name, message, asp.runtime.Intention())
+
+
+    # pour test
+    import autogen_agentchat.messages as messages
+
+    # pour test
+    @message_handler
+    async def on_text_message(self, message: messages.TextMessage, ctx:  MessageContext) -> None:
+        print(f"Hello, {message.source}, you said {message.content}!")

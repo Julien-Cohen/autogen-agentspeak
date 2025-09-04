@@ -4,19 +4,27 @@ import asyncio
 import getpass
 
 import autogen_core
-from autogen_core import SingleThreadedAgentRuntime
+from autogen_core import SingleThreadedAgentRuntime, AgentId
 
 from autogen_agentspeak.bdi import BDIAgent
 
+import autogen_agentchat.messages as messages
 
 async def main():
     runtime = SingleThreadedAgentRuntime()
 
+
+
     await BDIAgent.register(
-        runtime, type="TELL", factory=lambda: BDIAgent("test", "basic.asl")
+        runtime, type="truc", factory=lambda: BDIAgent("test", "basic.asl")
     )
 
     runtime.start()
+
+
+    # Remark : the agent has not been instantiated yet
+    await runtime.send_message(messages.TextMessage(content="Hello, World!", source="User"), AgentId("truc", "default"))
+
 
     """" a.bdi.set_belief("car", "azul", "big")
     a.bdi.print_beliefs()
