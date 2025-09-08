@@ -1,5 +1,5 @@
 import os
-from ast import literal_eval
+
 
 import agentspeak.runtime
 import agentspeak.stdlib
@@ -8,6 +8,7 @@ from autogen_core import RoutedAgent, type_subscription, message_handler, Messag
 from message import MyMessage
 import message as message_module
 
+import agentspeak_autogen.bdi
 
 
 @type_subscription(topic_type=message_module.asp_message_rcv)
@@ -27,7 +28,7 @@ class ReceiverAgent(RoutedAgent):
     async def handle_message(self, message: MyMessage, ctx: MessageContext) -> None:
         if message.illocution == "TELL":
 
-            (functor, args) = parse_literal(message.content)
+            (functor, args) = agentspeak_autogen.bdi.parse_literal(message.content)
             m = agentspeak.Literal(functor, args)
             self.a.call(
                 agentspeak.Trigger.addition,
@@ -38,22 +39,3 @@ class ReceiverAgent(RoutedAgent):
 
         else:
             print ("unrecognized illocution:" + message.illocution)
-
-# from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
-def parse_literal(msg):
-    functor = msg.split("(")[0]
-    if "(" in msg:
-        args = msg.split("(")[1]
-        args = args.split(")")[0]
-        args = literal_eval(args)
-
-        def recursion(arg):
-            if isinstance(arg, list):
-                return tuple(recursion(i) for i in arg)
-            return arg
-
-        new_args = (recursion(args),)
-
-    else:
-        new_args = ''
-    return functor, new_args
