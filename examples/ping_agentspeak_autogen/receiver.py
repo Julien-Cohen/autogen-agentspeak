@@ -14,7 +14,6 @@ import message as message_module
 class ReceiverAgent(RoutedAgent):
 
     def __init__(self, descr):
-        print("Building a new ReceiverAgent")
         super().__init__(descr)
 
         self.env = agentspeak.runtime.Environment()
@@ -26,24 +25,17 @@ class ReceiverAgent(RoutedAgent):
 
     @message_handler
     async def handle_message(self, message: MyMessage, ctx: MessageContext) -> None:
-        print("(python layer) Message received. ")
         if message.illocution == "TELL":
-            print ("(python layer) received a TELL message: " + message.content)
 
             (functor, args) = parse_literal(message.content)
             m = agentspeak.Literal(functor, args)
-            print ("(python layer) parsed literal: " + str(m))
-            print("[begin call]")
             self.a.call(
                 agentspeak.Trigger.addition,
                 agentspeak.GoalType.belief,
                 m,
                 agentspeak.runtime.Intention())
-            print("[end call]")
-            print("[begin step]")
-            self.a.step()
+            self.env.run()
 
-            print("[end step]")
         else:
             print ("unrecognized illocution:" + message.illocution)
 
