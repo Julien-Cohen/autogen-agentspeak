@@ -2,5 +2,5 @@
 
 +!start <- .print("hello").
 
-+ping<- .print("I received a ping.").
++ping<- .print("(asp layer) I received a ping.").
 
