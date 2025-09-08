@@ -3,11 +3,12 @@ from ast import literal_eval
 
 import agentspeak.runtime
 import agentspeak.stdlib as agentspeak_stdlib
-from autogen_core import RoutedAgent, type_subscription, message_handler, MessageContext
+from autogen_core import RoutedAgent, type_subscription, message_handler, MessageContext, TopicId
 
 from message import MyMessage
 import message as message_module
 
+import asyncio
 
 
 @type_subscription(topic_type=message_module.asp_message_send)
@@ -48,7 +49,7 @@ class SenderAgent(RoutedAgent):
     # this method is called by __init__
     def add_custom_actions(self, actions):
 
-        # first custom action
+        # custom action
         @actions.add_function(
             ".autogen_send",
             (
@@ -56,7 +57,15 @@ class SenderAgent(RoutedAgent):
             ),
         )
         def _autogen_send(lit):
-            print("action requested: " +  str(lit))
+
+            # (self.publish_message is defined with the async keyword)
+            asyncio.create_task(self.publish_message(
+                MyMessage(
+                    illocution="TELL",
+                    content="ping",
+                ),
+                topic_id=TopicId(message_module.asp_message_rcv, source="default"),
+            ))
 
 
 
