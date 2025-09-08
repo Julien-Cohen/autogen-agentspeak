@@ -10,15 +10,15 @@ import message as message_module
 
 
 
-@type_subscription(topic_type=message_module.asp_message_rcv)
-class ReceiverAgent(RoutedAgent):
+@type_subscription(topic_type=message_module.asp_message_send)
+class SenderAgent(RoutedAgent):
 
     def __init__(self, descr):
         super().__init__(descr)
 
         self.env = agentspeak.runtime.Environment()
 
-        with open(os.path.join(os.path.dirname(__file__), "receiver.asl")) as source:
+        with open(os.path.join(os.path.dirname(__file__), "sender.asl")) as source:
             self.a=self.env.build_agent(source, agentspeak.stdlib.actions)
 
         self.env.run()

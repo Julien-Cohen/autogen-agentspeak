@@ -1,6 +1,6 @@
 !start.
 
-+!start <- .print("(asp layer) hello").
++!start <- .print("(receiver/asp layer) hello from receiver").
 
-+ping<- .print("(asp layer) I received a ping.").
++ping<- .print("(receiver/asp layer) I received a ping.").
 
