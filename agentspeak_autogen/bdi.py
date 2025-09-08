@@ -1,10 +1,11 @@
+import asyncio
 import os
 from ast import literal_eval
 
 import agentspeak
 import agentspeak.runtime
 import agentspeak.stdlib
-from autogen_core import RoutedAgent
+from autogen_core import RoutedAgent, TopicId
 
 from dataclasses import dataclass
 
@@ -50,9 +51,25 @@ class BDIAgent(RoutedAgent):
 
         self.env.run()
 
-    # abstract method
+    # this method is called by __init__
     def add_custom_actions(self, actions):
-        pass
+            # custom action
+            @actions.add_function(
+                ".autogen_send",
+                (
+                        agentspeak.Literal,
+                        agentspeak.Literal,
+                ),
+            )
+            def _autogen_send(lit, topic):
+                # (self.publish_message is defined with the async keyword)
+                asyncio.create_task(self.publish_message(
+                    MyMessage(
+                        illocution="TELL",
+                        content=str(lit),
+                    ),
+                    topic_id=TopicId(str(topic), source="default"),
+                ))
 
     def on_receive(self, message: MyMessage):
         if message.illocution == "TELL":

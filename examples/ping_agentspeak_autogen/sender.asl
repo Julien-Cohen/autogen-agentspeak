@@ -4,8 +4,8 @@
 
 +doping <-
     .print("(sender/asp layer) I received a ping request.");
-    .autogen_send(ping, ANSWER);
-    .wait(2000);
+    .autogen_send(ping, to_receiver, ANSWER);
+    .wait(1000);
     .print("sent.").
 
 #+!start <-

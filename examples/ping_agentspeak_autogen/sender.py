@@ -23,26 +23,6 @@ class SenderAgent(agentspeak_autogen.bdi.BDIAgent):
         self.on_receive(message)
 
 
-    # this method is called by __init__
-    def add_custom_actions(self, actions):
-
-        # custom action
-        @actions.add_function(
-            ".autogen_send",
-            (
-                agentspeak.Literal,
-            ),
-        )
-        def _autogen_send(lit):
-
-            # (self.publish_message is defined with the async keyword)
-            asyncio.create_task(self.publish_message(
-                agentspeak_autogen.bdi.MyMessage(
-                    illocution="TELL",
-                    content=str(lit),
-                ),
-                topic_id=TopicId(message_module.asp_message_rcv, source="default"),
-            ))
 
 
 

@@ -11,7 +11,7 @@ import message as message_module
 import agentspeak_autogen.bdi
 
 
-@type_subscription(topic_type=message_module.asp_message_rcv)
+@type_subscription(topic_type="to_receiver")
 class ReceiverAgent(agentspeak_autogen.bdi.BDIAgent):
 
     def __init__(self, descr):
