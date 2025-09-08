@@ -39,7 +39,7 @@ class SenderAgent(agentspeak_autogen.bdi.BDIAgent):
             asyncio.create_task(self.publish_message(
                 agentspeak_autogen.bdi.MyMessage(
                     illocution="TELL",
-                    content="ping", #FIXME
+                    content=str(lit),
                 ),
                 topic_id=TopicId(message_module.asp_message_rcv, source="default"),
             ))
