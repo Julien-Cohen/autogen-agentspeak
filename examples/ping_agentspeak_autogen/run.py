@@ -5,10 +5,11 @@ import asyncio
 
 from autogen_core import SingleThreadedAgentRuntime, TopicId
 
-from message import MyMessage
 import message
 from receiver import ReceiverAgent
 from sender import SenderAgent
+
+import agentspeak_autogen.bdi
 
 async def main():
     # AgentSpeak init : we don't init the agentspeakruntime here.
@@ -43,7 +44,7 @@ async def main():
 
     # Send a message
     await autogen_runtime.publish_message(
-        MyMessage(
+        agentspeak_autogen.bdi.MyMessage(
             illocution="TELL",
             content="doping",
         ),

@@ -6,6 +6,12 @@ import agentspeak.runtime
 import agentspeak.stdlib
 from autogen_core import RoutedAgent
 
+from dataclasses import dataclass
+
+@dataclass
+class MyMessage:
+    illocution: str
+    content: str
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 def parse_literal(msg):
@@ -26,6 +32,8 @@ def parse_literal(msg):
         new_args = ''
     return functor, new_args
 
+
+
 class BDIAgent(RoutedAgent):
 
     def __init__(self, descr, asl_file):
@@ -45,3 +53,18 @@ class BDIAgent(RoutedAgent):
     # abstract method
     def add_custom_actions(self, actions):
         pass
+
+    def on_receive(self, message: MyMessage):
+        if message.illocution == "TELL":
+
+            (functor, args) = parse_literal(message.content)
+            m = agentspeak.Literal(functor, args)
+            self.a.call(
+                agentspeak.Trigger.addition,
+                agentspeak.GoalType.belief,
+                m,
+                agentspeak.runtime.Intention())
+            self.env.run()
+
+        else:
+            print("unrecognized illocution:" + message.illocution)

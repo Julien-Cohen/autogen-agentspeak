@@ -4,7 +4,6 @@ import agentspeak.runtime
 import agentspeak.stdlib as agentspeak_stdlib
 from autogen_core import RoutedAgent, type_subscription, message_handler, MessageContext, TopicId
 
-from message import MyMessage
 import message as message_module
 
 import asyncio
@@ -20,20 +19,8 @@ class SenderAgent(agentspeak_autogen.bdi.BDIAgent):
 
 
     @message_handler
-    async def handle_message(self, message: MyMessage, ctx: MessageContext) -> None:
-        if message.illocution == "TELL":
-
-            (functor, args) = agentspeak_autogen.bdi.parse_literal(message.content)
-            m = agentspeak.Literal(functor, args)
-            self.a.call(
-                agentspeak.Trigger.addition,
-                agentspeak.GoalType.belief,
-                m,
-                agentspeak.runtime.Intention())
-            self.env.run()
-
-        else:
-            print ("unrecognized illocution:" + message.illocution)
+    async def handle_message(self, message: agentspeak_autogen.bdi.MyMessage, ctx: MessageContext) -> None:
+        self.on_receive(message)
 
 
     # this method is called by __init__
@@ -50,9 +37,9 @@ class SenderAgent(agentspeak_autogen.bdi.BDIAgent):
 
             # (self.publish_message is defined with the async keyword)
             asyncio.create_task(self.publish_message(
-                MyMessage(
+                agentspeak_autogen.bdi.MyMessage(
                     illocution="TELL",
-                    content="ping",
+                    content="ping", #FIXME
                 ),
                 topic_id=TopicId(message_module.asp_message_rcv, source="default"),
             ))

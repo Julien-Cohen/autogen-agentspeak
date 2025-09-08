@@ -1,9 +1,6 @@
-from dataclasses import dataclass
+
 
 asp_message_rcv = "ASP_MESSAGE_TO_RECEIVER"
 asp_message_send = "ASP_MESSAGE_TO_SENDER"
 
-@dataclass
-class MyMessage:
-    illocution: str
-    content: str
+
