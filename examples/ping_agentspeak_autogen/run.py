@@ -45,7 +45,7 @@ async def main():
     await autogen_runtime.publish_message(
         MyMessage(
             illocution="TELL",
-            content="!doping",
+            content="doping",
         ),
         topic_id=TopicId(message.asp_message_send, source="default"),
     )

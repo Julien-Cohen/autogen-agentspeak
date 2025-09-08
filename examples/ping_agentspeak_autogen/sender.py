@@ -2,7 +2,7 @@ import os
 from ast import literal_eval
 
 import agentspeak.runtime
-import agentspeak.stdlib
+import agentspeak.stdlib as agentspeak_stdlib
 from autogen_core import RoutedAgent, type_subscription, message_handler, MessageContext
 
 from message import MyMessage
@@ -18,8 +18,13 @@ class SenderAgent(RoutedAgent):
 
         self.env = agentspeak.runtime.Environment()
 
+        # add custom actions (must occur before loading the asl file)
+        self.bdi_actions = agentspeak.Actions(agentspeak_stdlib.actions)
+        self.add_custom_actions(self.bdi_actions)
+
         with open(os.path.join(os.path.dirname(__file__), "sender.asl")) as source:
-            self.a=self.env.build_agent(source, agentspeak.stdlib.actions)
+            self.a=self.env.build_agent(source, self.bdi_actions)
+
 
         self.env.run()
 
@@ -38,6 +43,23 @@ class SenderAgent(RoutedAgent):
 
         else:
             print ("unrecognized illocution:" + message.illocution)
+
+
+    # this method is called by __init__
+    def add_custom_actions(self, actions):
+
+        # first custom action
+        @actions.add_function(
+            ".autogen_send",
+            (
+                agentspeak.Literal,
+            ),
+        )
+        def _autogen_send(lit):
+            print("action requested: " +  str(lit))
+
+
+
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 def parse_literal(msg):
