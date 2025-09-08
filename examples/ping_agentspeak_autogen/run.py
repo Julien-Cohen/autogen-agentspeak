@@ -8,6 +8,7 @@ from autogen_core import SingleThreadedAgentRuntime, TopicId
 from message import MyMessage
 import message
 from receiver import ReceiverAgent
+from sender import SenderAgent
 
 async def main():
     # AgentSpeak init : we don't init the agentspeakruntime here.
@@ -20,25 +21,37 @@ async def main():
     # AutoGen init
     autogen_runtime = SingleThreadedAgentRuntime()
 
+    # Create AutoGen agents
     await ReceiverAgent.register(
         autogen_runtime,
-        type=message.asp_message,
-        factory=lambda: ReceiverAgent("test agent"),
+        type=message.asp_message_rcv,
+        factory=lambda: ReceiverAgent("test receiver agent"),
+    )
+
+    await SenderAgent.register(
+        autogen_runtime,
+        type=message.asp_message_send,
+        factory=lambda: SenderAgent("test sender agent"),
     )
 
     # We don't run any agentspeak runtime here.
     # They are run by each agent.
     # agentspeak_env.run()
 
+    # Start AutoGen runtime
     autogen_runtime.start()
 
+    # Send a message
     await autogen_runtime.publish_message(
         MyMessage(
             illocution="TELL",
-            content="ping",
+            content="!doping",
         ),
-        topic_id=TopicId(message.asp_message, source="default"),
+        topic_id=TopicId(message.asp_message_send, source="default"),
     )
+
+    # Remark : in this test, the receiver is never instantiated by autogen because
+    # no message matching its subscription is emitted.
 
     await autogen_runtime.stop_when_idle()
 

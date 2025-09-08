@@ -1,6 +1,11 @@
 !start.
 
-+!start <-
-  .send(receiver,tell, ping(1));
-  .wait(2000);
-  .print("sent.").
++!start <- .print("(sender/asp layer) hello from sender").
+
++!doping <-
+    .print("(sender/asp layer) I received a ping request.").
+
+#+!start <-
+#  .send(receiver,tell, ping);
+#  .wait(2000);
+#  .print("sent.").
