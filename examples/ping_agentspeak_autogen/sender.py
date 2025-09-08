@@ -13,22 +13,11 @@ import agentspeak_autogen.bdi
 
 
 @type_subscription(topic_type=message_module.asp_message_send)
-class SenderAgent(RoutedAgent):
+class SenderAgent(agentspeak_autogen.bdi.BDIAgent):
 
     def __init__(self, descr):
-        super().__init__(descr)
+        super().__init__(descr, "sender.asl")
 
-        self.env = agentspeak.runtime.Environment()
-
-        # add custom actions (must occur before loading the asl file)
-        self.bdi_actions = agentspeak.Actions(agentspeak_stdlib.actions)
-        self.add_custom_actions(self.bdi_actions)
-
-        with open(os.path.join(os.path.dirname(__file__), "sender.asl")) as source:
-            self.a=self.env.build_agent(source, self.bdi_actions)
-
-
-        self.env.run()
 
     @message_handler
     async def handle_message(self, message: MyMessage, ctx: MessageContext) -> None:

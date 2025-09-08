@@ -12,17 +12,11 @@ import agentspeak_autogen.bdi
 
 
 @type_subscription(topic_type=message_module.asp_message_rcv)
-class ReceiverAgent(RoutedAgent):
+class ReceiverAgent(agentspeak_autogen.bdi.BDIAgent):
 
     def __init__(self, descr):
-        super().__init__(descr)
+        super().__init__(descr, "receiver.asl")
 
-        self.env = agentspeak.runtime.Environment()
-
-        with open(os.path.join(os.path.dirname(__file__), "receiver.asl")) as source:
-            self.a=self.env.build_agent(source, agentspeak.stdlib.actions)
-
-        self.env.run()
 
     @message_handler
     async def handle_message(self, message: MyMessage, ctx: MessageContext) -> None:
