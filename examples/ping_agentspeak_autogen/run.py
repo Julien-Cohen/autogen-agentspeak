@@ -50,8 +50,6 @@ async def main():
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
 
-    # Remark : in this test, the receiver is never instantiated by autogen because
-    # no message matching its subscription is emitted.
 
     await autogen_runtime.stop_when_idle()
 
