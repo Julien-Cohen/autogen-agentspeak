@@ -74,29 +74,29 @@ class BDIAgent(RoutedAgent):
                     topic_id=TopicId(str(topic), source="default"),
                 ))
 
+    # Inspired from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
     def on_receive(self, message: MyMessage):
         if message.illocution == "tell":
-
-            (functor, args) = parse_literal(message.content)
-            m = agentspeak.Literal(functor, args)
-            tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
-            self.asp_agent.call(
-                agentspeak.Trigger.addition,
-                agentspeak.GoalType.belief,
-                tagged_m,
-                agentspeak.runtime.Intention())
-            self.env.run()
+            goal_type = agentspeak.GoalType.belief
+            trigger = agentspeak.Trigger.addition
         elif message.illocution == "achieve":
-
-            (functor, args) = parse_literal(message.content)
-            m = agentspeak.Literal(functor, args)
-            tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
-            self.asp_agent.call(
-                agentspeak.Trigger.addition,
-                agentspeak.GoalType.achievement,
-                tagged_m,
-                agentspeak.runtime.Intention())
-            self.env.run()
-
+            goal_type = agentspeak.GoalType.achievement
+            trigger = agentspeak.Trigger.addition
         else:
-            print("unrecognized illocution:" + message.illocution)
+            raise agentspeak.AslError("unknown illocutionary force: {}".format(message.illocution))
+
+        intention = agentspeak.runtime.Intention()
+        (functor, args) = parse_literal(message.content)
+
+        m = agentspeak.Literal(functor, args)
+
+        tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
+
+        self.asp_agent.call(
+            trigger,
+            goal_type,
+            tagged_m,
+            intention)
+
+        self.env.run()
+
