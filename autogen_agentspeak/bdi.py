@@ -10,7 +10,7 @@ from autogen_core import RoutedAgent, TopicId
 from dataclasses import dataclass
 
 @dataclass
-class MyMessage:
+class AgentSpeakMessage:
     illocution: str
     content: str
     sender: str
@@ -66,7 +66,7 @@ class BDIAgent(RoutedAgent):
             def _autogen_send(topic, illoc, lit):
                 # (self.publish_message is defined with the async keyword)
                 asyncio.create_task(self.publish_message(
-                    MyMessage(
+                    AgentSpeakMessage(
                         illocution = str(illoc),
                         content    = str(lit),
                         sender     = str(self.asp_agent.name)
@@ -75,7 +75,7 @@ class BDIAgent(RoutedAgent):
                 ))
 
     # Inspired from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
-    def on_receive(self, message: MyMessage):
+    def on_receive(self, message: AgentSpeakMessage):
         if message.illocution == "tell":
             goal_type = agentspeak.GoalType.belief
             trigger = agentspeak.Trigger.addition

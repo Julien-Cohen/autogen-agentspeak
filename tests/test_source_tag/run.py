@@ -35,7 +35,7 @@ async def main():
 
     # Send a first message to trigger agent behavior
     await autogen_runtime.publish_message(
-        autogen_agentspeak.bdi.MyMessage(
+        autogen_agentspeak.bdi.AgentSpeakMessage(
             illocution="achieve",
             content="share_secret",
             sender="main"
