@@ -59,20 +59,21 @@ class BDIAgent(RoutedAgent):
                 (
                         agentspeak.Literal,
                         agentspeak.Literal,
+                        agentspeak.Literal,
                 ),
             )
-            def _autogen_send(lit, topic):
+            def _autogen_send(topic, illoc, lit):
                 # (self.publish_message is defined with the async keyword)
                 asyncio.create_task(self.publish_message(
                     MyMessage(
-                        illocution="TELL",
+                        illocution=str(illoc),
                         content=str(lit),
                     ),
                     topic_id=TopicId(str(topic), source="default"),
                 ))
 
     def on_receive(self, message: MyMessage):
-        if message.illocution == "TELL":
+        if message.illocution == "tell":
 
             (functor, args) = parse_literal(message.content)
             m = agentspeak.Literal(functor, args)

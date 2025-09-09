@@ -4,7 +4,7 @@
 
 +do_ping <-
     .print("(sender/asp layer) I received a ping request.");
-    .autogen_send(ping, to_receiver, ANSWER);
+    .autogen_send(to_receiver, tell, ping, ANSWER);
     .wait(1000);
     .print("(sender/asp layer) sent.").
 
