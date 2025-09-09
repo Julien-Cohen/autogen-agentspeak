@@ -38,6 +38,7 @@ async def main():
         autogen_agentspeak.bdi.MyMessage(
             illocution="achieve",
             content="do_ping",
+            sender = "main"
         ),
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
@@ -47,6 +48,7 @@ async def main():
         autogen_agentspeak.bdi.MyMessage(
             illocution="achieve",
             content="share_secret",
+            sender = "main"
         ),
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
