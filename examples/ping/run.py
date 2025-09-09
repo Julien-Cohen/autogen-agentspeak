@@ -42,6 +42,14 @@ async def main():
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
 
+    # Send a second message
+    await autogen_runtime.publish_message(
+        autogen_agentspeak.bdi.MyMessage(
+            illocution="achieve",
+            content="share_secret",
+        ),
+        topic_id=TopicId(message.asp_message_send, source="default"),
+    )
 
     await autogen_runtime.stop_when_idle()
 
