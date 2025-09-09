@@ -11,5 +11,5 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
 
     @message_handler
     async def handle_message(self, message: autogen_agentspeak.bdi.AgentSpeakMessage, ctx: MessageContext) -> None:
-        self.on_receive(message)
+        self.on_receive(message, ctx)
 

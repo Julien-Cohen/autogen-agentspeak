@@ -5,7 +5,7 @@ from ast import literal_eval
 import agentspeak
 import agentspeak.runtime
 import agentspeak.stdlib
-from autogen_core import RoutedAgent, TopicId
+from autogen_core import RoutedAgent, TopicId, MessageContext
 
 from dataclasses import dataclass
 
@@ -75,7 +75,7 @@ class BDIAgent(RoutedAgent):
                 ))
 
     # Inspired from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
-    def on_receive(self, message: AgentSpeakMessage):
+    def on_receive(self, message: AgentSpeakMessage, ctx: MessageContext):
         if message.illocution == "tell":
             goal_type = agentspeak.GoalType.belief
             trigger = agentspeak.Trigger.addition
