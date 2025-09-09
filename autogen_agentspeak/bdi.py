@@ -13,6 +13,7 @@ from dataclasses import dataclass
 class MyMessage:
     illocution: str
     content: str
+    sender = "*fixme*"
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 def parse_literal(msg):
@@ -77,20 +78,22 @@ class BDIAgent(RoutedAgent):
 
             (functor, args) = parse_literal(message.content)
             m = agentspeak.Literal(functor, args)
+            tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
             self.a.call(
                 agentspeak.Trigger.addition,
                 agentspeak.GoalType.belief,
-                m,
+                tagged_m,
                 agentspeak.runtime.Intention())
             self.env.run()
         elif message.illocution == "achieve":
 
             (functor, args) = parse_literal(message.content)
             m = agentspeak.Literal(functor, args)
+            tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
             self.a.call(
                 agentspeak.Trigger.addition,
                 agentspeak.GoalType.achievement,
-                m,
+                tagged_m,
                 agentspeak.runtime.Intention())
             self.env.run()
 

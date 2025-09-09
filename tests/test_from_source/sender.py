@@ -1,0 +1,21 @@
+
+from autogen_core import  type_subscription, message_handler, MessageContext, TopicId
+
+import message as message_module
+
+import autogen_agentspeak.bdi
+
+@type_subscription(topic_type=message_module.asp_message_send)
+class SenderAgent(autogen_agentspeak.bdi.BDIAgent):
+
+    def __init__(self, descr):
+        super().__init__(descr, "sender.asl")
+
+    @message_handler
+    async def handle_message(self, message: autogen_agentspeak.bdi.MyMessage, ctx: MessageContext) -> None:
+        self.on_receive(message)
+
+
+
+
+
