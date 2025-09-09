@@ -75,7 +75,7 @@ class BDIAgent(RoutedAgent):
                 ))
 
     # Inspired from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
-    def on_receive(self, message: AgentSpeakMessage, ctx: MessageContext):
+    async def on_receive(self, message: AgentSpeakMessage, ctx: MessageContext) -> None:
         if message.illocution == "tell":
             goal_type = agentspeak.GoalType.belief
             trigger = agentspeak.Trigger.addition

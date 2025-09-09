@@ -9,9 +9,5 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
 
     def __init__(self, descr):
         super().__init__(descr, "receiver.asl")
-
-    #handle_message = message_handler(handle_message)
-    @message_handler
-    async def handle_message(self, message: autogen_agentspeak.bdi.AgentSpeakMessage, ctx: MessageContext) -> None:
-        self.on_receive(message, ctx)
+        self.on_receive = message_handler(autogen_agentspeak.bdi.BDIAgent.on_receive)
 
