@@ -46,7 +46,7 @@ async def main():
     await autogen_runtime.publish_message(
         autogen_agentspeak.bdi.MyMessage(
             illocution="TELL",
-            content="doping",
+            content="do_ping",
         ),
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
