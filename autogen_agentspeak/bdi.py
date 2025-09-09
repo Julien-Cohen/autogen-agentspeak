@@ -83,6 +83,16 @@ class BDIAgent(RoutedAgent):
                 m,
                 agentspeak.runtime.Intention())
             self.env.run()
+        elif message.illocution == "achieve":
+
+            (functor, args) = parse_literal(message.content)
+            m = agentspeak.Literal(functor, args)
+            self.a.call(
+                agentspeak.Trigger.addition,
+                agentspeak.GoalType.achievement,
+                m,
+                agentspeak.runtime.Intention())
+            self.env.run()
 
         else:
             print("unrecognized illocution:" + message.illocution)

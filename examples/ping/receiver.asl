@@ -1,6 +1,8 @@
 !start.
 
-+!start <- .print("(receiver/asp layer) hello from receiver").
++!start <-
+    .print("(receiver/asp layer) hello from receiver").
 
-+ping<- .print("(receiver/asp layer) I received a ping.").
++sender_alive <-
+    .print("(receiver/asp layer) new belief : the sender is alive.").
 

@@ -12,17 +12,12 @@ from sender import SenderAgent
 import autogen_agentspeak.bdi
 
 async def main():
-    # AgentSpeak init : we don't init the agentspeakruntime here.
-    # It is initialized in each agent.
-    # agentspeak_env = agentspeak.runtime.Environment()
-
-    #with open(os.path.join(os.path.dirname(__file__), "sender.asl")) as source:
-    #    agentspeak_env.build_agent(source, agentspeak.stdlib.actions)
 
     # AutoGen init
     autogen_runtime = SingleThreadedAgentRuntime()
 
-    # Create AutoGen agents
+    # Register AutoGen agents types
+    # (AutoGen creates agents only when needed for message delivery.)
     await ReceiverAgent.register(
         autogen_runtime,
         type=message.asp_message_rcv,
@@ -35,17 +30,13 @@ async def main():
         factory=lambda: SenderAgent("test sender agent"),
     )
 
-    # We don't run any agentspeak runtime here.
-    # They are run by each agent.
-    # agentspeak_env.run()
-
     # Start AutoGen runtime
     autogen_runtime.start()
 
-    # Send a message
+    # Send a first message to trigger agent behavior
     await autogen_runtime.publish_message(
         autogen_agentspeak.bdi.MyMessage(
-            illocution="tell",
+            illocution="achieve",
             content="do_ping",
         ),
         topic_id=TopicId(message.asp_message_send, source="default"),
