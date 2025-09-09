@@ -13,7 +13,7 @@ from dataclasses import dataclass
 class MyMessage:
     illocution: str
     content: str
-    sender = "*fixme*"
+    sender: str
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 def parse_literal(msg):
@@ -48,7 +48,7 @@ class BDIAgent(RoutedAgent):
         self.add_custom_actions(self.bdi_actions)
 
         with open(asl_file) as source:
-            self.a=self.env.build_agent(source, self.bdi_actions)
+            self.asp_agent=self.env.build_agent(source, self.bdi_actions)
 
         self.env.run()
 
@@ -67,8 +67,9 @@ class BDIAgent(RoutedAgent):
                 # (self.publish_message is defined with the async keyword)
                 asyncio.create_task(self.publish_message(
                     MyMessage(
-                        illocution=str(illoc),
-                        content=str(lit),
+                        illocution = str(illoc),
+                        content    = str(lit),
+                        sender     = str(self.asp_agent.name)
                     ),
                     topic_id=TopicId(str(topic), source="default"),
                 ))
@@ -79,7 +80,7 @@ class BDIAgent(RoutedAgent):
             (functor, args) = parse_literal(message.content)
             m = agentspeak.Literal(functor, args)
             tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
-            self.a.call(
+            self.asp_agent.call(
                 agentspeak.Trigger.addition,
                 agentspeak.GoalType.belief,
                 tagged_m,
@@ -90,7 +91,7 @@ class BDIAgent(RoutedAgent):
             (functor, args) = parse_literal(message.content)
             m = agentspeak.Literal(functor, args)
             tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
-            self.a.call(
+            self.asp_agent.call(
                 agentspeak.Trigger.addition,
                 agentspeak.GoalType.achievement,
                 tagged_m,
