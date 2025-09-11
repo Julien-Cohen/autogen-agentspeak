@@ -28,8 +28,10 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
 
                 (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
                 m = agentspeak.Literal(functor, args)
-
-                self.asp_agent.call(agentspeak.Trigger.addition, agentspeak.GoalType.belief, m, agentspeak.runtime.Intention())
+                tagged_m = m.with_annotation(
+                    agentspeak.Literal("source", (agentspeak.Literal("llm"),))
+        )
+                self.asp_agent.call(agentspeak.Trigger.addition, agentspeak.GoalType.belief, tagged_m, agentspeak.runtime.Intention())
                 self.env.run()
 
             except ValueError:
