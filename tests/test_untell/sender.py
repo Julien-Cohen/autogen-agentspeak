@@ -12,8 +12,8 @@ class SenderAgent(autogen_agentspeak.bdi.BDIAgent):
         super().__init__(descr, "sender.asl")
 
     @message_handler
-    async def handle_message(self, message: autogen_agentspeak.bdi.MyMessage, ctx: MessageContext) -> None:
-        self.on_receive(message)
+    async def handle_message(self, message: autogen_agentspeak.bdi.AgentSpeakMessage, ctx: MessageContext) -> None:
+        self.on_receive(message, ctx)
 
 
 
