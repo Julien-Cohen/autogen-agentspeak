@@ -1,16 +1,16 @@
 !start.
 
 +!start <-
-    .print("hello from receiver").
+    .print("hello from llm dealer").
 
-+!request <-
++!request[source(X)] <-
     .prompt(hello);
-    +waiting.
+    +respond_to(X).
 
-+waiting <- .print("waiting for the response.").
++respond_to(X) <-
+    .print("waiting for llm response.").
 
--waiting <- .print("finished waiting.").
-
-+nb_planets(X) : waiting <-
-    -waiting ;
-    .autogen_send(to_sender,tell,nb_planets(X)).
++nb_planets(X) : respond_to(D) <-
+    .print("response received from llm, going to respond to ", D);
+    -respond_to(D) ;
+    .autogen_send(D,tell,nb_planets(X)).

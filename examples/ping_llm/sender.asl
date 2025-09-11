@@ -4,7 +4,7 @@
 
 +!do_request <-
     .print("I received a request.");
-    .autogen_send(to_llm_dealer, achieve, request).
+    .autogen_send(llm_dealer, achieve, request).
 
 +nb_planets(X) <-
     .print("The number of planets is ", X).

@@ -1,6 +1,6 @@
 
 
-asp_message_rcv = "to_llm_dealer"
-asp_message_send = "to_sender"
+asp_message_rcv = "llm_dealer"
+asp_message_send = "sender"
 
 
