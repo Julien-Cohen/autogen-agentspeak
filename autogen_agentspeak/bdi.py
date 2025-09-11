@@ -1,5 +1,6 @@
 import asyncio
-import os
+import collections
+import re
 from ast import literal_eval
 
 import agentspeak
@@ -16,12 +17,20 @@ class AgentSpeakMessage:
     sender: str
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
+# Warning: github repository for spade-bdi is stuck at v0.1.4 while on Pypi 0.3.2
 def parse_literal(msg):
     functor = msg.split("(")[0]
+
     if "(" in msg:
         args = msg.split("(")[1]
         args = args.split(")")[0]
-        args = literal_eval(args)
+
+        x = re.search("^_X_*", args)
+
+        if x is not None:
+            args = agentspeak.Var()
+        else:
+            args = literal_eval(args)
 
         def recursion(arg):
             if isinstance(arg, list):
@@ -31,7 +40,7 @@ def parse_literal(msg):
         new_args = (recursion(args),)
 
     else:
-        new_args = ''
+        new_args = ""
     return functor, new_args
 
 
@@ -39,6 +48,7 @@ def parse_literal(msg):
 class BDIAgent(RoutedAgent):
 
     def __init__(self, descr, asl_file):
+        self.bdi_intention_buffer = collections.deque()
         super().__init__(descr)
 
         self.env = agentspeak.runtime.Environment()
@@ -75,31 +85,89 @@ class BDIAgent(RoutedAgent):
                 ))
 
     # Inspired from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
-    def on_receive(self, message: AgentSpeakMessage, ctx: MessageContext):
-        if message.illocution == "tell":
+    def on_receive(self, msg: AgentSpeakMessage, ctx: MessageContext):
+
+        ilf_type = msg.illocution
+        if ilf_type == "tell":
             goal_type = agentspeak.GoalType.belief
             trigger = agentspeak.Trigger.addition
-        elif message.illocution == "achieve":
-            goal_type = agentspeak.GoalType.achievement
-            trigger = agentspeak.Trigger.addition
-        elif message.illocution == "untell":
+        elif ilf_type == "untell":
             goal_type = agentspeak.GoalType.belief
             trigger = agentspeak.Trigger.removal
+        elif ilf_type == "achieve":
+            goal_type = agentspeak.GoalType.achievement
+            trigger = agentspeak.Trigger.addition
+        elif ilf_type == "unachieve":
+            goal_type = agentspeak.GoalType.achievement
+            trigger = agentspeak.Trigger.removal
+        elif ilf_type == "tellHow":
+            goal_type = agentspeak.GoalType.tellHow
+            trigger = agentspeak.Trigger.addition
+        elif ilf_type == "untellHow":
+            goal_type = agentspeak.GoalType.tellHow
+            trigger = agentspeak.Trigger.removal
+        elif ilf_type == "askHow":
+            goal_type = agentspeak.GoalType.askHow
+            trigger = agentspeak.Trigger.addition
         else:
-            raise agentspeak.AslError("unknown illocutionary force: {}".format(message.illocution))
+            raise agentspeak.AslError("unknown illocutionary force: {}".format(ilf_type))
 
         intention = agentspeak.runtime.Intention()
-        (functor, args) = parse_literal(message.content)
 
-        m = agentspeak.Literal(functor, args)
+        ###
+        if ilf_type in ["tellHow", "untellHow"]:
+            message = agentspeak.Literal("plain_text", (msg.content,), frozenset())
+        elif ilf_type == "askHow":
+            raise Exception("Not supported yet") # fixme
+        #    message = agentspeak.Literal("plain_text", (msg.content,), frozenset())
 
-        tagged_m = m.with_annotation(agentspeak.Literal("source", (agentspeak.Literal(str(message.sender)),)))
+        #    def _call_ask_how(self, receiver, message, intention):
+                # message.args[0] is the string plan to be sent
+        #        body = agentspeak.asl_str(
+        #            agentspeak.freeze(message.args[0], intention.scope, {})
+        #        )
+        #        mdata = {
+        #            "performative": "BDI",
+        #            "ilf_type": "tellHow",
+        #        }
+        #        msg = Message(to=receiver, body=body, metadata=mdata)
+        #        _call_ask_how.spade_agent.submit(
+        #            _call_ask_how.spade_class.send(msg)
+        #        )
 
-        self.asp_agent.call(
-            trigger,
-            goal_type,
-            tagged_m,
-            intention)
+        #    _call_ask_how.spade_agent = self.agent
+
+        #    _call_ask_how.spade_class = self
+
+        #    agentspeak.runtime.Agent._call_ask_how = _call_ask_how
+
+            # Overrides function ask_how from module agentspeak
+        #    agentspeak.runtime.Agent._ask_how = _ask_how
+
+        else:
+            # Sends a literal
+            functor, args = parse_literal(msg.content)
+
+            message = agentspeak.Literal(functor, args)
+
+        message = agentspeak.freeze(message, intention.scope, {})
+
+        # Add source to message
+        tagged_message = message.with_annotation(
+            agentspeak.Literal("source", (agentspeak.Literal(str(msg.sender)),))
+        )
+        if ilf_type == "tellHow":
+            pass
+
+        self.bdi_intention_buffer.append(
+            (trigger, goal_type, tagged_message, intention)
+        )
+
+        if self.bdi_intention_buffer:
+            temp_intentions = collections.deque(self.bdi_intention_buffer)
+            for trigger, goal_type, term, intention in temp_intentions:
+                self.asp_agent.call(trigger, goal_type, term, intention)
+                self.bdi_intention_buffer.popleft()
 
         self.env.run()
 
