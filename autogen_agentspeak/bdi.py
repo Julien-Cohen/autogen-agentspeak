@@ -82,6 +82,9 @@ class BDIAgent(RoutedAgent):
         elif message.illocution == "achieve":
             goal_type = agentspeak.GoalType.achievement
             trigger = agentspeak.Trigger.addition
+        elif message.illocution == "untell":
+            goal_type = agentspeak.GoalType.belief
+            trigger = agentspeak.Trigger.removal
         else:
             raise agentspeak.AslError("unknown illocutionary force: {}".format(message.illocution))
 
