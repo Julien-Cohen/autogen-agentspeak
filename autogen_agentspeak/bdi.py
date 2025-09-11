@@ -64,7 +64,11 @@ class BDIAgent(RoutedAgent):
 
     # this method is called by __init__
     def add_custom_actions(self, actions):
-            # custom action
+
+            @actions.add_function(".name",())
+            def _name():
+                return self.asp_agent.name
+
             @actions.add_procedure(
                 ".autogen_send",
                 (

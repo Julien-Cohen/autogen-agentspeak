@@ -1,7 +1,8 @@
 !start.
 
 +!start <-
-    .print("hello from llm dealer").
+    .name(N) ;
+    .print("hello from", N).
 
 +!request[source(X)] <-
     .prompt(hello);
