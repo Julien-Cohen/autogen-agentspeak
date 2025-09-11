@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import asyncio
 
 from autogen_core import SingleThreadedAgentRuntime, TopicId
@@ -17,11 +16,8 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 async def main():
     model_client = OpenAIChatCompletionClient(
             model="gpt-4o-mini",
-            # api_key="YOUR_API_KEY"
         )
-    
-    
-    
+
     # AutoGen init
     autogen_runtime = SingleThreadedAgentRuntime()
 
@@ -52,7 +48,7 @@ async def main():
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
 
-    await asyncio.sleep(10) # otherwise, autogen stops before an answer from the LLM is received.
+    await asyncio.sleep(5) # otherwise, autogen stops before an answer from the LLM is received.
     await autogen_runtime.stop_when_idle()
     await model_client.close()
 
