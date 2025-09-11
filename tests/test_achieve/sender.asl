@@ -6,12 +6,12 @@ secret(42).
 
 +!do_ping <-
     .print("(sender/asp layer) I received a ping request.");
-    .autogen_send(to_receiver, tell, sender_alive, ANSWER);
+    .autogen_send(to_receiver, tell, sender_alive);
     .wait(1000);
     .print("(sender/asp layer) sent.").
 
 
 
 +!share_secret : secret(X) <-
-    .autogen_send(to_receiver, tell, secret(X), ANSWER).
+    .autogen_send(to_receiver, tell, secret(X)).
 

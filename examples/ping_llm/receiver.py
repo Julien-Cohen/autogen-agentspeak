@@ -40,7 +40,7 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
     def add_custom_actions(self, actions):
         super().add_custom_actions(actions)
 
-        @actions.add_function(
+        @actions.add_procedure(
                 functor=".prompt",
                 arg_specs=(
                    agentspeak.Literal,

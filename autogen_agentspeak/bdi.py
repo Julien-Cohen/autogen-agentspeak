@@ -65,7 +65,7 @@ class BDIAgent(RoutedAgent):
     # this method is called by __init__
     def add_custom_actions(self, actions):
             # custom action
-            @actions.add_function(
+            @actions.add_procedure(
                 ".autogen_send",
                 (
                         agentspeak.Literal,

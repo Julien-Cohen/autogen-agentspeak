@@ -6,13 +6,13 @@ secret(42).
 
 +!do_ping : secret(X) <-
     .print("I received a ping request.");
-    .autogen_send(to_receiver, achieve, show, ANSWER);
-    .autogen_send(to_receiver, tell, secret(X), ANSWER);
+    .autogen_send(to_receiver, achieve, show);
+    .autogen_send(to_receiver, tell, secret(X));
     .wait(1000);
-    .autogen_send(to_receiver, achieve, show, ANSWER);
-    .autogen_send(to_receiver, untell, secret(X), ANSWER);
+    .autogen_send(to_receiver, achieve, show);
+    .autogen_send(to_receiver, untell, secret(X));
     .wait(1000);
-    .autogen_send(to_receiver, achieve, show, ANSWER);
+    .autogen_send(to_receiver, achieve, show);
     .print("Done.").
 
 

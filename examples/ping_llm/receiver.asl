@@ -4,7 +4,7 @@
     .print("hello from receiver").
 
 +!request <-
-    .prompt(hello, ANSWER);
+    .prompt(hello);
     +waiting.
 
 +waiting <- .print("waiting for the response.").
