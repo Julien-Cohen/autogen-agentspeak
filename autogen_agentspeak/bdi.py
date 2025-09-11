@@ -84,9 +84,10 @@ class BDIAgent(RoutedAgent):
                     topic_id=TopicId(str(topic), source="default"),
                 ))
 
-    # Inspired from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
+
     def on_receive(self, msg: AgentSpeakMessage, ctx: MessageContext):
 
+        # from spade-bdi 0.3.2, file bdi.py
         ilf_type = msg.illocution
         if ilf_type == "tell":
             goal_type = agentspeak.GoalType.belief
