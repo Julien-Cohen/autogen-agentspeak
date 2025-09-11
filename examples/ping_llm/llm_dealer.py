@@ -12,27 +12,30 @@ import message
 @type_subscription(topic_type=message.asp_message_rcv)
 class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
 
-    async def run_prompt(self):
-        prompt = "How many planets are there in our solar system? Answer with a single number."
-        llm_result = await self._model_client.create(
-            messages=[
-                UserMessage(content=prompt, source=self.id.key),
-            ],
-            cancellation_token=None,
-        )
-        response = llm_result.content
-        try:
-            v=int(response)
-            s = "nb_planets(" + str(v) + ")"
+    async def run_prompt(self, subject: agentspeak.Literal):
+        if str(subject) == "nb_planets" :
+            prompt = "How many planets are there in our solar system? Answer with a single number."
+            llm_result = await self._model_client.create(
+                messages=[
+                    UserMessage(content=prompt, source=self.id.key),
+                ],
+                cancellation_token=None,
+            )
+            response = llm_result.content
+            try:
+                v=int(response)
+                s = "nb_planets(" + str(v) + ")"
 
-            (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
-            m = agentspeak.Literal(functor, args)
+                (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
+                m = agentspeak.Literal(functor, args)
 
-            self.asp_agent.call(agentspeak.Trigger.addition, agentspeak.GoalType.belief, m, agentspeak.runtime.Intention())
-            self.env.run()
+                self.asp_agent.call(agentspeak.Trigger.addition, agentspeak.GoalType.belief, m, agentspeak.runtime.Intention())
+                self.env.run()
 
-        except ValueError:
-            print("bad result from llm")
+            except ValueError:
+                print("bad result from llm")
+        else:
+            print("bad request: " + str(subject) + ".")
 
     def __init__(self, descr, model_client : ChatCompletionClient):
         super().__init__(descr, "llm_dealer.asl")
@@ -48,8 +51,8 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
                    agentspeak.Literal,
                 ),
             )
-        def _prompt(content):
-            task = asyncio.create_task(self.run_prompt())
+        def _prompt(subject: agentspeak.Literal):
+            task = asyncio.create_task(self.run_prompt(subject))
 
 
     @message_handler
