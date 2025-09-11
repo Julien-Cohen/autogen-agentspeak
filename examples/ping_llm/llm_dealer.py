@@ -6,8 +6,10 @@ import autogen_agentspeak.bdi
 import agentspeak
 import asyncio
 
+import message
 
-@type_subscription(topic_type="to_receiver")
+
+@type_subscription(topic_type=message.asp_message_rcv)
 class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
 
     async def run_prompt(self):
@@ -33,7 +35,7 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
             print("bad result from llm")
 
     def __init__(self, descr, model_client : ChatCompletionClient):
-        super().__init__(descr, "receiver.asl")
+        super().__init__(descr, "llm_dealer.asl")
         self._model_client = model_client
 
 

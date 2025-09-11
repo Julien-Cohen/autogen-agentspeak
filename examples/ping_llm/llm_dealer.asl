@@ -13,4 +13,4 @@
 
 +nb_planets(X) : waiting <-
     -waiting ;
-    .autogen_send(to_sender,tell,nb_planets(X),_).
+    .autogen_send(to_sender,tell,nb_planets(X)).

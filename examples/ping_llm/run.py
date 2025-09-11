@@ -5,7 +5,7 @@ import asyncio
 from autogen_core import SingleThreadedAgentRuntime, TopicId
 
 import message
-from receiver import ReceiverAgent
+from llm_dealer import ReceiverAgent
 from sender import SenderAgent
 
 import autogen_agentspeak.bdi
@@ -48,7 +48,7 @@ async def main():
         topic_id=TopicId(message.asp_message_send, source="default"),
     )
 
-    await asyncio.sleep(5) # otherwise, autogen stops before an answer from the LLM is received.
+    await asyncio.sleep(4) # otherwise, autogen stops before an answer from the LLM is received.
     await autogen_runtime.stop_when_idle()
     await model_client.close()
 
