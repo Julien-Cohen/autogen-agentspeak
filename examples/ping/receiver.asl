@@ -1,10 +1,10 @@
 !start.
 
 +!start <-
-    .print("(receiver/asp layer) hello from receiver").
+    .print("Hello from receiver").
 
 +sender_alive <-
-    .print("(receiver/asp layer) new belief : the sender is alive.").
+    .print("New belief : the sender is alive.").
 
 +secret(X) <-
-    .print("(receiver/asp layer) new belief : the secret is ", X).
+    .print("New belief : the secret is ", X).
