@@ -24,18 +24,21 @@ class SenderAgent(RoutedAgent):
             print("[" + self.id.key + "] This message could not be handled.")
 
     @message_handler(strict=True)
-    async def handle__start_message(self, message : StartMessage, ctx: MessageContext) -> None:
+    async def handle_start_message(self, message : StartMessage, ctx: MessageContext) -> None:
         print("[" + self.id.key + "] Sender awake by message reception (StartMessage).")
 
+        await self.tell(message_module.asp_message_rcv, "sender_alive", message_module.asp_message_send)
+
+    async def tell(self, dest, lit, source):
         await self.publish_message(
-                    autogen_agentspeak.bdi.AgentSpeakMessage(
-                        illocution = "tell",
-                        content    = "sender_alive",
-                        sender     = message_module.asp_message_send
-                    ),
-                    topic_id=TopicId(message_module.asp_message_rcv, source="default"),
-                )
-        print("[" + self.id.key + "] Ping sent.")
+            autogen_agentspeak.bdi.AgentSpeakMessage(
+                illocution="tell",
+                content=lit,
+                sender=source
+            ),
+            topic_id=TopicId(dest, source="default"),
+        )
+        print("[" + self.id.key + "] tell sent.")
 
 
 
