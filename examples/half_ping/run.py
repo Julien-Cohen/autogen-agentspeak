@@ -40,7 +40,7 @@ async def main():
             content="do_ping",
             sender = "main"
         ),
-        topic_id=TopicId(message.asp_message_send, source="default"),
+        topic_id=TopicId(message.asp_message_send, source="start"),
     )
 
 

@@ -21,7 +21,7 @@ class SenderAgent(RoutedAgent):
                         content    = "sender_alive",
                         sender     = message_module.asp_message_send
                     ),
-                    topic_id=TopicId(message_module.asp_message_rcv, source="default"),
+                    topic_id=TopicId(message_module.asp_message_rcv, source="ping_request"),
                 )
             print("[" + self.id.key + "] Ping sent.")
         elif message.illocution == "tell" and message.content == "pong":
