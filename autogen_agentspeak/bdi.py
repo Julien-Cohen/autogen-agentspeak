@@ -69,6 +69,11 @@ class BDIAgent(RoutedAgent):
             def _name():
                 return self.asp_agent.name
 
+            @actions.add("jump",0)
+            def _jump(a: agentspeak.runtime.Agent, b, c):
+                print("["+ a.name +"] I jump")
+                yield
+
             @actions.add_procedure(
                 ".autogen_send",
                 (
