@@ -8,8 +8,7 @@ from autogen_core import SingleThreadedAgentRuntime, TopicId
 import message
 from receiver import ReceiverAgent
 from sender import SenderAgent
-
-import autogen_agentspeak.bdi
+from sender import StartMessage
 
 async def main():
 
@@ -35,12 +34,8 @@ async def main():
 
     # Send a first message to trigger agent behavior
     await autogen_runtime.publish_message(
-        autogen_agentspeak.bdi.AgentSpeakMessage(
-            illocution="achieve",
-            content="do_ping",
-            sender = "main"
-        ),
-        topic_id=TopicId(message.asp_message_send, source="start"),
+        StartMessage(),
+        topic_id=TopicId(message.asp_message_send, source="default"),
     )
 
 

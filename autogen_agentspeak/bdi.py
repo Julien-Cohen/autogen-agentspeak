@@ -90,7 +90,7 @@ class BDIAgent(RoutedAgent):
                         content    = str(lit),
                         sender     = str(self.asp_agent.name)
                     ),
-                    topic_id=TopicId(str(topic), source=str(illoc) + "__" + str(lit)),
+                    topic_id=TopicId(str(topic), source="default")
                 ))
 
 
