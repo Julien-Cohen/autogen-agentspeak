@@ -1,7 +1,7 @@
 import asyncio
 import collections
 import re
-from ast import literal_eval
+import ast
 
 import agentspeak
 import agentspeak.runtime
@@ -30,7 +30,7 @@ def parse_literal(msg):
         if x is not None:
             args = agentspeak.Var()
         else:
-            args = literal_eval(args)
+            args = ast.literal_eval(args)
 
         def recursion(arg):
             if isinstance(arg, list):
