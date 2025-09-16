@@ -2,13 +2,14 @@
 
 secret(42).
 
-+!start <- .print("(sender/asp layer) hello from sender").
++!start <-
+    .print("hello from sender").
 
 +!do_ping <-
-    .print("(sender/asp layer) I received a ping request.");
+    .print("I received a ping request.");
     .autogen_send(to_receiver, tell, sender_alive);
     .wait(1000);
-    .print("(sender/asp layer) sent.").
+    .print("Sent.").
 
 
 

@@ -89,6 +89,25 @@ class BDIAgent(RoutedAgent):
                     topic_id=TopicId(str(topic), source="default")
                 ))
 
+            @actions.add_procedure(
+                ".autogen_send_str",
+                (
+                        agentspeak.Literal,
+                        agentspeak.Literal,
+                        str,
+                ),
+            )
+            def _autogen_send_str(topic, illoc, lit):
+                # (self.publish_message is defined with the async keyword)
+                asyncio.create_task(self.publish_message(
+                    AgentSpeakMessage(
+                        illocution = str(illoc),
+                        content    = lit,
+                        sender     = str(self.asp_agent.name)
+                    ),
+                    topic_id=TopicId(str(topic), source="default")
+                ))
+
 
     def on_receive(self, msg: AgentSpeakMessage, ctx: MessageContext):
 
