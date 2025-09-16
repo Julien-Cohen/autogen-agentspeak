@@ -59,6 +59,7 @@ async def main():
     await autogen_runtime.publish_message(
         autogen_agentspeak.bdi.AgentSpeakMessage(
             illocution="achieve",
+            #content="run_test_list",
             content="build",
             sender="main"
         ),

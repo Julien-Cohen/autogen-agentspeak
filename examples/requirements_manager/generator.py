@@ -41,7 +41,7 @@ class GeneratorAgent(BDITalker):
         elif message.illocution == "tell" and message.content.startswith("req"):
             self.log("List of requirements received, as a literal= " + message.content)
             tmp = utils.extract_list_from_req_lit(message.content)
-            print("Extraction as a list: " + str(tmp))
+            print("Extraction as a list (len "+ str(len(tmp)) +"): " + str(tmp))
             self.l = tmp
             self.log(str(len(self.l)) + " requirements received. " + str(self.l))
 
