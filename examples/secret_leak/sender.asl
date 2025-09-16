@@ -23,7 +23,7 @@
     .wait(1000).
 
 # Remark : the following does not work :
-#    .autogen_send_str(to_receiver, tellHow, "+!leak[source(F)] : secret(S) <- .autogen_send(F,tell,secret(S)).");
+#    .autogen_send_plan(to_receiver, tellHow, "+!leak[source(F)] : secret(S) <- .autogen_send(F,tell,secret(S)).");
 
 
 
