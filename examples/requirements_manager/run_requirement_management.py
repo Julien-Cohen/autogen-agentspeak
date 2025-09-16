@@ -3,14 +3,35 @@
 import os
 import asyncio
 
-from autogen_core import SingleThreadedAgentRuntime, TopicId
+from autogen_core import SingleThreadedAgentRuntime, TopicId, RoutedAgent, type_subscription, message_handler, \
+    MessageContext
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 import message
+from autogen_agentspeak.talk_to_bdi import BDITalker
+from examples.requirements_manager.message import asp_message_to_driver
 from manager import ManagerAgent
 from completeness_evaluator import CompletenessEvaluatorAgent
 from generator import GeneratorAgent
 import autogen_agentspeak
+import utils
+
+@type_subscription(topic_type=asp_message_to_driver)
+class DriverAgent(BDITalker):
+
+    @message_handler(strict=True)
+    async def handle_asp_message(self, message: autogen_agentspeak.bdi.AgentSpeakMessage, ctx: MessageContext) -> None:
+        self.log("Driver awake by message reception (AgentSpeakMessage).")
+
+        if message.illocution == "tell" and message.content.startswith("req"):
+            self.log("Requirements received.")
+            self.l = utils.extract_list_from_req_lit(message.content)
+            utils.custom_print_list(self.l)
+
+        else:
+            self.log("This message could not be handled.")
+
+
 
 async def main():
     model_client = OpenAIChatCompletionClient(
@@ -40,6 +61,12 @@ async def main():
         factory=lambda: GeneratorAgent("test generator agent", model_client=model_client),
     )
 
+    await DriverAgent.register(
+        autogen_runtime,
+        type=message.asp_message_to_driver,
+        factory=lambda: DriverAgent("test driver agent"),
+    )
+
     # Start AutoGen runtime
     autogen_runtime.start()
 
@@ -50,7 +77,7 @@ async def main():
         autogen_agentspeak.bdi.AgentSpeakMessage(
             illocution="tell",
             content="spec(\"" + example_spec + "\")", # fixme : automate build literal
-            sender="main"
+            sender=asp_message_to_driver
         ),
         topic_id=TopicId(message.asp_message_to_manager, source="default"),
     )
@@ -59,9 +86,8 @@ async def main():
     await autogen_runtime.publish_message(
         autogen_agentspeak.bdi.AgentSpeakMessage(
             illocution="achieve",
-            #content="run_test_list",
             content="build",
-            sender="main"
+            sender=asp_message_to_driver
         ),
         topic_id=TopicId(message.asp_message_to_manager, source="default"),
     )

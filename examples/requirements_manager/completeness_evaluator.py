@@ -20,8 +20,8 @@ class CompletenessEvaluatorAgent(BDITalker):
         if message.illocution == "tell" and message.content.startswith("req"):
             self.log("Requirements received. " + str(message.content))
             self.l = utils.extract_list_from_req_lit(message.content)
-            self.log(str(len(self.l)) + " requirements received. " + str(self.l))
-            utils.custom_print_list(self.l)
+            self.log(str(len(self.l)) + " requirements received. " )
+
 
         elif message.illocution == "achieve" and message.content == "evaluate":
             self.log("Request to evaluate.")
