@@ -1,7 +1,8 @@
 !start.
 
 +!start <-
-    .print("Hello from receiver").
+    .my_name(N) ;
+    .print("Hello from", N).
 
 +sender_alive <-
     .print("New belief : the sender is alive.").

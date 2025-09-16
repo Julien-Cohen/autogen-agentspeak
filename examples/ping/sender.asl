@@ -2,7 +2,9 @@
 
 secret(42).
 
-+!start <- .print("Hello from sender").
++!start <-
+    .my_name(N) ;
+    .print("Hello from", N).
 
 +!do_ping <-
     .print("I received a ping request.");
