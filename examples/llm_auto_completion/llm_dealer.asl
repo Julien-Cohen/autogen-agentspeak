@@ -3,7 +3,7 @@
 #nb_planets(12).
 
 +!start <-
-    .name(N) ;
+    .my_name(N) ;
     .print("hello from", N).
 
 +!respond(DEST,INFO) <- .autogen_send(DEST, tell, INFO).

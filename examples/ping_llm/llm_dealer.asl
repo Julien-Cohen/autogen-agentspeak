@@ -1,7 +1,7 @@
 !start.
 
 +!start <-
-    .name(N) ;
+    .my_name(N) ;
     .print("hello from", N).
 
 +!request_nb_planets[source(X)] <-

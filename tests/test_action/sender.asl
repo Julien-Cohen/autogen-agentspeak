@@ -1,7 +1,7 @@
 !start.
 
 +!start <-
-    .name(N) ;
+    .my_name(N) ;
     .print("hello from", N).
 
 +!do_ping <-

@@ -1,7 +1,7 @@
 !start.
 
 +!start <-
-    .name(N);
+    .my_name(N);
     .print("Hello from", N, ".").
 
 +secret(X)[source(Y)] <-

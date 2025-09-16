@@ -3,7 +3,7 @@
 secret(42).
 
 +!start <-
-    .name(N);
+    .my_name(N);
     .print("Hello from", N).
 
 +!share_secret : secret(X) <-
