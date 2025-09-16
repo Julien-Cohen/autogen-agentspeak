@@ -90,14 +90,14 @@ class BDIAgent(RoutedAgent):
                 ))
 
             @actions.add_procedure(
-                ".autogen_send_str",
+                ".autogen_send_plan",
                 (
                         agentspeak.Literal,
                         agentspeak.Literal,
                         str,
                 ),
             )
-            def _autogen_send_str(topic, illoc, lit):
+            def _autogen_send_plan(topic, illoc, lit):
                 # (self.publish_message is defined with the async keyword)
                 asyncio.create_task(self.publish_message(
                     AgentSpeakMessage(

@@ -18,7 +18,7 @@
 
 +!teach <-
     .print("Going to teach.");
-    .autogen_send_str(to_receiver, tellHow, "+!show_alt <- .my_name(N) ; .print(\"hello from\",N).");
+    .autogen_send_plan(to_receiver, tellHow, "+!show_alt <- .my_name(N) ; .print(\"hello from\",N).");
     .print("Plan sent.");
     .wait(1000).
 
