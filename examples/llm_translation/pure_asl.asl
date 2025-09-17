@@ -1,25 +1,20 @@
-
 !start.
 
 pos(0).
 
-+!publish[source(S)] <-
-    .print("Going to publish my catalog") ;
-    .send_catalog(S).
-
 +!start <-
     .my_name(N) ;
     .print("hello from", N).
+
++!publish[source(S)] <-
+    .print("Going to publish my catalog") ;
+    .send_catalog(S).
 
 +!do_move : pos(X) <-
     .print("I received a move request.") ;
     -+pos(X+1) ;
     ?pos(Y) ;
     .print("I moved at pos", Y).
-
-# Warning : the order of rules is important in AgentSpeak.
-# First rule has priority (not best match).
-+!do_move <- .print("failsafe plan for do_move").
 
 +!do_jump <-
     ?pos(P);

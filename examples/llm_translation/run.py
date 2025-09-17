@@ -66,8 +66,6 @@ async def main():
         topic_id=TopicId(message.asp_message_to_translator, source="default"),
     )
 
-    print ("second order sent")
-
     print("WARNING: because of asynchronous calls to the LLM, the jump and move orders can arrive at the robot agent in any order.")
 
     await asyncio.sleep(5) # otherwise, autogen stops before an answer from the LLM is received.
