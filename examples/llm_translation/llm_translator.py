@@ -31,15 +31,7 @@ class TranslatorAgent(autogen_agentspeak.talk_to_bdi.BDITalker):
             print ("response = " + str(response))
 
             # refactor-me : achieve
-            await self.publish_message(
-            autogen_agentspeak.bdi.AgentSpeakMessage(
-                illocution="achieve",
-                content=response,
-                sender=asp_message_to_translator
-            ),
-            topic_id=TopicId(asp_message_to_asp_agent, source="default"),
-            )
-            self.log("tell sent.")
+            await self.achieve(asp_message_to_asp_agent, response, asp_message_to_translator)
 
 
     def __init__(self, descr, model_client : ChatCompletionClient):
