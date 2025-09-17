@@ -17,5 +17,6 @@ pos(0).
 +!do_move <- .print("failsafe plan for do_move").
 
 +!do_jump <-
-    .print("I received a jump request");
+    ?pos(P);
+    .print("I received a jump request, while I am at pos", P);
     jump.

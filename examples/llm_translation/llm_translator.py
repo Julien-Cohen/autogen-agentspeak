@@ -13,7 +13,8 @@ from examples.llm_translation.message import asp_message_to_asp_agent, asp_messa
 @type_subscription(topic_type=message_module.asp_message_to_translator)
 class TranslatorAgent(autogen_agentspeak.talk_to_bdi.BDITalker):
 
-    async def translate(self, text, ctx):
+    async def translate(self, text: str, ctx):
+            print("Translator agent received the following request: " + text)
 
             prompt = ("Your task is to translate a human request into an AgentSpeak goals for a robot."
                         + " The possible AgentSpeak achievements are do_move to move and do_jump to jump. "
