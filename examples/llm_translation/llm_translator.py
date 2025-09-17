@@ -28,7 +28,7 @@ class TranslatorAgent(autogen_agentspeak.talk_to_bdi.BDITalker):
                 cancellation_token=None,
             )
             response = llm_result.content
-            print ("response = " + str(response))
+            print ("LLM response = " + str(response))
 
             # refactor-me : achieve
             await self.achieve(asp_message_to_asp_agent, response, asp_message_to_translator)

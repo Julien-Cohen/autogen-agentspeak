@@ -46,6 +46,14 @@ async def main():
         topic_id=TopicId(message.asp_message_to_translator, source="default"),
     )
 
+    # Send a second message to trigger agent behavior
+    await autogen_runtime.publish_message(
+        message.HumanMessage(
+            human_content="Please jump now."
+        ),
+        topic_id=TopicId(message.asp_message_to_translator, source="default"),
+    )
+
     await asyncio.sleep(5) # otherwise, autogen stops before an answer from the LLM is received.
     await autogen_runtime.stop_when_idle()
     await model_client.close()
