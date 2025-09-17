@@ -38,13 +38,25 @@ async def main():
     # Start AutoGen runtime
     autogen_runtime.start()
 
-    # Send a first message to trigger agent behavior
+    # Send a first message to init the first agent
+    await autogen_runtime.publish_message(
+        message.Command(
+            content="..."
+        ),
+        topic_id=TopicId(message.asp_message_to_translator, source="default"),
+    )
+
+    await asyncio.sleep(2)
+
+    # Send a message to trigger agent behavior
     await autogen_runtime.publish_message(
         message.HumanMessage(
             human_content="Please move dear robot."
         ),
         topic_id=TopicId(message.asp_message_to_translator, source="default"),
     )
+
+    await asyncio.sleep(2)
 
     # Send a second message to trigger agent behavior
     await autogen_runtime.publish_message(
@@ -53,6 +65,8 @@ async def main():
         ),
         topic_id=TopicId(message.asp_message_to_translator, source="default"),
     )
+
+    print ("second order sent")
 
     print("WARNING: because of asynchronous calls to the LLM, the jump and move orders can arrive at the robot agent in any order.")
 

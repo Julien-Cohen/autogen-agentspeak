@@ -16,6 +16,11 @@ class AgentSpeakMessage:
     content: str
     sender: str
 
+@dataclass
+class Entry:
+    achievement: str
+    meaning: str
+
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 # Warning: github repository for spade-bdi is stuck at v0.1.4 while on Pypi 0.3.2
 def parse_literal(msg):
@@ -50,6 +55,7 @@ class BDIAgent(RoutedAgent):
     def __init__(self, descr, asl_file):
         self.bdi_intention_buffer = collections.deque()
         super().__init__(descr)
+        self.published_commands = []
 
         self.env = agentspeak.runtime.Environment()
 
@@ -108,6 +114,22 @@ class BDIAgent(RoutedAgent):
                     topic_id=TopicId(str(topic), source="default")
                 ))
 
+            @actions.add_procedure(
+                ".send_catalog",
+                (
+                        agentspeak.Literal,
+                ),
+            )
+            def _send_catalog(topic):
+                # (self.publish_message is defined with the async keyword)
+                asyncio.create_task(self.publish_message(
+                    AgentSpeakMessage(
+                        illocution="tell",
+                        content="catalog(" + str(self.published_commands) + ")",
+                        sender=str(self.asp_agent.name)
+                    ),
+                    topic_id=TopicId(str(topic), source="default")
+                ))
 
     def on_receive(self, msg: AgentSpeakMessage, ctx: MessageContext):
 
@@ -195,4 +217,10 @@ class BDIAgent(RoutedAgent):
                 self.bdi_intention_buffer.popleft()
 
         self.env.run()
+
+
+    def register_command(self, command, doc):
+        """This procedure inserts an achievement with its documentation in the catalog of this agent,
+        which will be able to publish it to tell others how to use it."""
+        self.published_commands.append(Entry(command, doc))
 

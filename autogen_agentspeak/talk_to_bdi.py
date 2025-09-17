@@ -17,7 +17,7 @@ class BDITalker(RoutedAgent):
             ),
             topic_id=TopicId(dest, source="default"),
         )
-        self.log(illocution + " sent.")
+        #self.log(illocution + " sent.")
 
     async def tell(self, dest: str, lit: str, source):
         await self.send("tell", dest, lit,source)
@@ -25,3 +25,7 @@ class BDITalker(RoutedAgent):
 
     async def achieve(self, dest: str, lit: str, source):
        await self.send("achieve", dest, lit,source)
+
+def extract_catalog(s:str):
+    """ Extract the  parameter of a catalog literal."""
+    return s.removeprefix("catalog(").removesuffix(")")

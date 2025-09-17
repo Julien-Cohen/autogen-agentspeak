@@ -6,3 +6,7 @@ asp_message_to_asp_agent = "to_asp_agent"
 @dataclasses.dataclass
 class HumanMessage:
     human_content: str
+
+@dataclasses.dataclass
+class Command:
+    content: str

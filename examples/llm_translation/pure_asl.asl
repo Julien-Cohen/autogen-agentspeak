@@ -1,6 +1,11 @@
+
 !start.
 
 pos(0).
+
++!publish[source(S)] <-
+    .print("Going to publish my catalog") ;
+    .send_catalog(S).
 
 +!start <-
     .my_name(N) ;
