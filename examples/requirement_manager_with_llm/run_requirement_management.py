@@ -9,7 +9,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 import message
 from autogen_agentspeak.talk_to_bdi import BDITalker
-from examples.requirements_manager.message import asp_message_to_driver
+from examples.requirement_manager_with_llm.message import asp_message_to_driver
 from manager import ManagerAgent
 from completeness_evaluator import CompletenessEvaluatorAgent
 from generator import GeneratorAgent
