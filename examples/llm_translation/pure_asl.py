@@ -10,8 +10,6 @@ class PureASLAgent(autogen_agentspeak.bdi.BDIAgent):
 
     def __init__(self, descr):
         super().__init__(descr, "pure_asl.asl")
-        self.register_command("do_move","move the robot")
-        self.register_command("do_jump", "make the robot jump")
 
 
     @message_handler

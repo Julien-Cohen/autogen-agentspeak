@@ -115,6 +115,16 @@ class BDIAgent(RoutedAgent):
                 ))
 
             @actions.add_procedure(
+                ".set_public",
+                (
+                        agentspeak.Literal,
+                        str
+                ),
+            )
+            def _set_public(command:agentspeak.Literal,doc):
+                self.register_command(command.functor, doc) #fixme : add arity
+
+            @actions.add_procedure(
                 ".send_catalog",
                 (
                         agentspeak.Literal,

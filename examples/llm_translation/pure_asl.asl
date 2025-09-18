@@ -3,6 +3,8 @@
 pos(0).
 
 +!start <-
+    .set_public(do_move,"move the robot") ;
+    .set_public(do_jump,"make the robot jump") ;
     .my_name(N) ;
     .print("hello from", N).
 
