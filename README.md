@@ -9,6 +9,16 @@ autogen-agentspeak (this module) enables the design of AutoGen agents based on A
 This module relies on AutoGen (package autogen-core) and [python-agentspeak](https://github.com/niklasf/python-agentspeak) (package agentspeak). 
 See `requirements.txt` for matching version.
 
+### Optional
+ To run the examples that use an LLM, you must install the package `autogen-ext[openai]`
+and set your OPENAI_API_KEY in the environment.
+ To use another LLM just fix the following lines in each example source code.
+
+```
+model_client = OpenAIChatCompletionClient(
+        model="gpt-4o-mini",
+    )
+```
 
 
 # Current state
