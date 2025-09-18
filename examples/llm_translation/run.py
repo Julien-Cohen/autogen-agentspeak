@@ -66,6 +66,16 @@ async def main():
         topic_id=TopicId(message.asp_message_to_translator, source="default"),
     )
 
+    await asyncio.sleep(2)
+
+    # Send a third message to trigger agent behavior that require an achievement with a parameter
+    await autogen_runtime.publish_message(
+        message.HumanMessage(
+            human_content="Please move by 3 cm."
+        ),
+        topic_id=TopicId(message.asp_message_to_translator, source="default"),
+    )
+
     print("WARNING: because of asynchronous calls to the LLM, the jump and move orders can arrive at the robot agent in any order.")
 
     await asyncio.sleep(5) # otherwise, autogen stops before an answer from the LLM is received.

@@ -24,7 +24,7 @@ class TranslatorAgent(autogen_agentspeak.talk_to_bdi.BDITalker):
                         + "[END OF LIST OF ACHIEVEMENTS]"
                         + " Here is the sentence to translate. [BEGIN] "
                       + text + "[END] "
-                      + "Respond with only one achievement."
+                      + "Respond with only one achievement. For example you can answer 'do_dig' if that achievement has arity 0, or 'do_wait(300)' if arity is 1."
                       )
             llm_result = await self._model_client.create(
                 messages=[
