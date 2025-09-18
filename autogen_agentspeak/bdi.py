@@ -19,6 +19,7 @@ class AgentSpeakMessage:
 @dataclass
 class Entry:
     achievement: str
+    arity: int
     meaning: str
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
@@ -118,11 +119,12 @@ class BDIAgent(RoutedAgent):
                 ".set_public",
                 (
                         agentspeak.Literal,
+                        int,
                         str
                 ),
             )
-            def _set_public(command:agentspeak.Literal,doc):
-                self.register_command(command.functor, doc) #fixme : add arity
+            def _set_public(command:agentspeak.Literal,arity:int, doc:str):
+                self.register_command(command.functor, arity, doc) #fixme : add arity
 
             @actions.add_procedure(
                 ".send_catalog",
@@ -229,8 +231,8 @@ class BDIAgent(RoutedAgent):
         self.env.run()
 
 
-    def register_command(self, command, doc):
+    def register_command(self, command, arity, doc):
         """This procedure inserts an achievement with its documentation in the catalog of this agent,
         which will be able to publish it to tell others how to use it."""
-        self.published_commands.append(Entry(command, doc))
+        self.published_commands.append(Entry(command, arity, doc))
 
