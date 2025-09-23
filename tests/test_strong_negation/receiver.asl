@@ -1,0 +1,13 @@
+!start.
+
++!start <-
+    .my_name(N);
+    .print("Hello from", N, ".").
+
++secret(X)[source(Y)] <-
+    .print("New belief : the secret is", X);
+    .print("I got this secret from", Y).
+
++~secret(X)[source(Y)] <-
+    .print("New belief : the secret is not", X);
+    .print("I got this secret from", Y).
