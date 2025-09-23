@@ -7,6 +7,8 @@ import agentspeak
 import asyncio
 
 import message
+import autogen_agentspeak.utils as aa_utils
+
 
 
 @type_subscription(topic_type=message.asp_message_rcv)
@@ -23,7 +25,7 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
             )
             response = llm_result.content
             try:
-                b= (response.startswith("True") or response.startswith("true"))
+                b= aa_utils.parse_bool(response)
                 s = ("" if b else "~") + "has_pattern_matching_for_instanceof(" + str(v) + ")"
 
                 (functor, args) = autogen_agentspeak.bdi.parse_literal(s)

@@ -15,3 +15,11 @@ def filter_quotes(s:str):
 def custom_print_list(l):
     for s in l :
         print(" * " + s)
+
+def parse_bool(s):
+            if s.startswith("True") or s.startswith("true"):
+                return True
+            elif s.startswith("False") or s.startswith("false"):
+                return False
+            else:
+                return None

@@ -10,6 +10,7 @@
 
 +!do_request : java_version(X) <-
     .print("I received a request.");
+    .print("Considering Java", X) ;
     .autogen_send(llm_dealer, achieve, request_has_pattern_matching_for_instanceof(X)).
 
 +has_pattern_matching_for_instanceof(X): java_version(X) <-
