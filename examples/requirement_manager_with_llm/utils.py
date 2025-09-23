@@ -1,3 +1,4 @@
+import autogen_agentspeak.utils as aa_utils
 
 def isolate_spec_from_literal(s):
     tmp1=s.removeprefix("spec(")
@@ -10,15 +11,8 @@ def isolate_list(s):
     tmp2=tmp1.removesuffix(")")
     return tmp2
 
-def split_on_pipe(s):
-        if "|" in s :
-            (b,_,a) = s.partition("|")
-            return (b,a)
-        else:
-            raise ValueError ("No pipe in this string.")
 
-def remove_brackets(s):
-    return s.removeprefix("[").removesuffix("]")
+
 
 def remove_quotes_opt(s):
     if s.startswith("\"") and s.endswith("\""):
@@ -30,19 +24,18 @@ def remove_quotes_opt(s):
 
 def extract_list_from_req_lit(s):
     """Convert nested lists encoded in strings into plain python lists.
+
     Recursive function.
 
     Example: '["abc"|[]]' is converted into ["abc"]
-
     """
-
 
     s2 = isolate_list(s)
     if s2 == "[]":
         return []
     else :
-        tmp2 = remove_brackets(s2)
-        (e,r) = split_on_pipe(tmp2)
+        tmp2 = aa_utils.remove_brackets(s2)
+        (e,r) = aa_utils.split_on_pipe(tmp2)
         e2 = remove_quotes_opt(e)
         r2 = extract_list_from_req_lit(r) # recursion
         r2.insert(0,e2)
@@ -56,10 +49,3 @@ def run_test():
     print (len(r)==1)
 
 #run_test()
-
-def filter_quotes(s:str):
-    return s.replace("\"", "\\\"")
-
-def custom_print_list(l):
-    for s in l :
-        print(" * " + s)

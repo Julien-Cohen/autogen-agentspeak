@@ -15,6 +15,7 @@ from completeness_evaluator import CompletenessEvaluatorAgent
 from generator import GeneratorAgent
 import autogen_agentspeak
 import utils
+import autogen_agentspeak.utils as aa_utils
 
 @type_subscription(topic_type=asp_message_to_driver)
 class DriverAgent(BDITalker):
@@ -26,7 +27,7 @@ class DriverAgent(BDITalker):
         if message.illocution == "tell" and message.content.startswith("req"):
             self.log("Requirements received.")
             self.l = utils.extract_list_from_req_lit(message.content)
-            utils.custom_print_list(self.l)
+            aa_utils.custom_print_list(self.l)
 
         else:
             self.log("This message could not be handled.")

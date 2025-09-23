@@ -4,6 +4,7 @@ from autogen_core.models import ChatCompletionClient, UserMessage
 
 import autogen_agentspeak.bdi
 import utils
+import autogen_agentspeak.utils as aa_utils
 
 import message as message_module
 from autogen_agentspeak.talk_to_bdi import BDITalker
@@ -49,7 +50,7 @@ class GeneratorAgent(BDITalker):
             self.log("Request to generate.")
             response = await self.run_prompt(self.spec, ctx)
             self.log("Response: " + response)
-            await self.tell(message_module.asp_message_to_manager, "new_req(\"" + utils.filter_quotes(str(response)) + "\")",
+            await self.tell(message_module.asp_message_to_manager, "new_req(\"" + aa_utils.filter_quotes(str(response)) + "\")",
                             message_module.asp_message_to_generator)
         else:
             self.log("This message could not be handled: "+ str(message))
