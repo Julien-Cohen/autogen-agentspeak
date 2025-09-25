@@ -12,7 +12,7 @@ import autogen_agentspeak.utils as aa_utils
 
 
 @type_subscription(topic_type=message.asp_message_rcv)
-class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
+class LLMDealerAgent(autogen_agentspeak.bdi.BDIAgent):
 
     async def run_prompt(self, subject: agentspeak.Literal, v:int):
         if str(subject) == "has_pattern_matching_for_instanceof" :

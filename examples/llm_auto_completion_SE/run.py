@@ -5,7 +5,7 @@ import asyncio
 from autogen_core import SingleThreadedAgentRuntime, TopicId
 
 import message
-from llm_dealer import ReceiverAgent
+from llm_dealer import LLMDealerAgent
 from sender import SenderAgent
 
 import autogen_agentspeak.bdi
@@ -23,10 +23,10 @@ async def main():
 
     # Register AutoGen agents types
     # (AutoGen creates agents only when needed for message delivery.)
-    await ReceiverAgent.register(
+    await LLMDealerAgent.register(
         autogen_runtime,
         type=message.asp_message_rcv,
-        factory=lambda: ReceiverAgent("test receiver agent", model_client=model_client),
+        factory=lambda: LLMDealerAgent("test receiver agent", model_client=model_client),
     )
 
     await SenderAgent.register(
