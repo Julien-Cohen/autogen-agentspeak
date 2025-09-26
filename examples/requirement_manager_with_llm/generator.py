@@ -59,4 +59,3 @@ class GeneratorAgent(BDITalker):
             self.log("This message could not be handled: "+ str(message))
 
 
-

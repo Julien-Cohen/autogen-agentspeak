@@ -55,3 +55,4 @@ class CompletenessEvaluatorAgent(BDITalker):
             await self.tell(message_module.asp_message_to_manager, "completeness(" + aa_utils.filter_quotes(str(response)) + ")", message_module.asp_message_to_completeness_evaluator)
         else:
             self.log("This message could not be handled.")
+
