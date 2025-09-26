@@ -15,6 +15,7 @@
 
 +!build : spec(S) & req(L) <-
     .print("List of requirements found. Going to ask for completeness.", L) ;
+    .autogen_send(to_completeness_evaluator, tell, spec(S)) ;
     .autogen_send(to_completeness_evaluator, tell, req(L)) ;
     .autogen_send(to_completeness_evaluator, achieve, evaluate).
 
@@ -28,7 +29,6 @@
     .autogen_send(to_generator, tell, spec(S)) ;
     .autogen_send(to_generator, tell, req(L)) ;
     .autogen_send(to_generator, achieve, generate).
-
 
 +new_req(N) : req(L) <-
     .print("New requirement received:", N) ;
