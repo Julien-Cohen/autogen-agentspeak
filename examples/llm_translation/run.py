@@ -6,7 +6,7 @@ from autogen_core import SingleThreadedAgentRuntime, TopicId
 
 import message
 from llm_translator import TranslatorAgent
-from pure_asl import PureASLAgent
+from asl_robot import RobotAgent
 
 import autogen_agentspeak.bdi
 
@@ -29,10 +29,10 @@ async def main():
         factory=lambda: TranslatorAgent("test translator agent", model_client=model_client),
     )
 
-    await PureASLAgent.register(
+    await RobotAgent.register(
         autogen_runtime,
         type=message.asp_message_to_asp_agent,
-        factory=lambda: PureASLAgent("test asl agent"),
+        factory=lambda: RobotAgent("test asl agent"),
     )
 
     # Start AutoGen runtime

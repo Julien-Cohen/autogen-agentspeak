@@ -6,10 +6,10 @@ import message as message_module
 import autogen_agentspeak.bdi
 
 @type_subscription(topic_type=message_module.asp_message_to_asp_agent)
-class PureASLAgent(autogen_agentspeak.bdi.BDIAgent):
+class RobotAgent(autogen_agentspeak.bdi.BDIAgent):
 
     def __init__(self, descr):
-        super().__init__(descr, "pure_asl.asl")
+        super().__init__(descr, "asl_robot.asl")
 
 
     @message_handler
