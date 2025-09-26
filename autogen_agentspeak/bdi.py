@@ -70,7 +70,7 @@ class BDIAgent(RoutedAgent):
         self.env.run()
 
     # this method is called by __init__
-    def add_custom_actions(self, actions):
+    def add_custom_actions(self, actions: agentspeak.Actions):
 
             @actions.add("jump",0)
             def _jump(a: agentspeak.runtime.Agent, b, c):
