@@ -17,7 +17,7 @@ class AgentSpeakMessage:
     sender: str
 
 @dataclass
-class Entry:
+class CatalogEntry:
     achievement: str
     arity: int
     meaning: str
@@ -234,5 +234,5 @@ class BDIAgent(RoutedAgent):
     def register_command(self, command, arity, doc):
         """This procedure inserts an achievement with its documentation in the catalog of this agent,
         which will be able to publish it to tell others how to use it."""
-        self.published_commands.append(Entry(command, arity, doc))
+        self.published_commands.append(CatalogEntry(command, arity, doc))
 
