@@ -78,7 +78,7 @@ class BDIAgent(RoutedAgent):
                 yield
 
             @actions.add_procedure(
-                ".autogen_send",
+                ".send",
                 (
                         agentspeak.Literal,
                         agentspeak.Literal,
@@ -97,7 +97,7 @@ class BDIAgent(RoutedAgent):
                 ))
 
             @actions.add_procedure(
-                ".autogen_send_plan",
+                ".send_plan",
                 (
                         agentspeak.Literal,
                         agentspeak.Literal,
