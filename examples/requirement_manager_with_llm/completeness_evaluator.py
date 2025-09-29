@@ -13,7 +13,7 @@ from autogen_agentspeak.talk_to_bdi import BDITalker
 class CompletenessEvaluatorAgent(BDITalker):
 
     async def run_prompt(self, spec:str, req:str):
-        prompt = "Evaluate if the following list of requirements covers the function's specification input, output, and behavior \"" + spec + "\":" + req + ". Answer only with \"True\" or \"False\" (mind the case)."
+        prompt = "Evaluate if the following list of requirements covers completely the function's specification input, output, and behavior. The specification is : \"" + spec + "\" The list of requirements to evaluate is: " + req + " (end of list). Answer only with \"True\" or \"False\" (mind the case)."
         llm_result = await self._model_client.create(
             messages=[
                     UserMessage(content=prompt, source=self.id.key),
@@ -41,7 +41,7 @@ class CompletenessEvaluatorAgent(BDITalker):
         elif message.illocution == "tell" and message.content.startswith("req"):
             self.log("Requirements received. " + str(message.content))
             self.list_req = utils.extract_list_from_req_lit(message.content)
-            self.str_req = ' ; '.join([str(s) for s in self.list_req])
+            self.str_req = ' ; '.join(["* " + str(s) for s in self.list_req])
             self.log(str(len(self.list_req)) + " requirements received. " )
 
         elif message.illocution == "achieve" and message.content == "evaluate":
