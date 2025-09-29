@@ -39,11 +39,12 @@ def parse_literal(msg):
             args = ast.literal_eval(args)
 
         def recursion(arg):
-            if isinstance(arg, list):
+            if isinstance(arg, list) or isinstance(arg, tuple):
                 return tuple(recursion(i) for i in arg)
             return arg
+        r = recursion(args)
 
-        new_args = (recursion(args),)
+        new_args = r if isinstance(r, tuple) else (r,)
 
     else:
         new_args = ""
