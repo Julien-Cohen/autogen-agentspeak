@@ -13,8 +13,8 @@ from autogen_agentspeak.talk_to_bdi import BDITalker
 @type_subscription(topic_type=message_module.asp_message_to_generator)
 class GeneratorAgent(BDITalker):
 
-    async def run_prompt(self, spec:str, req):
-        prompt = "Give-me an atomic requirement for the following specification:" + spec + "Answer with only the requirement."
+    async def run_prompt(self, spec:str, req:str):
+        prompt = "Give me an atomic requirement for the following specification:" + spec + "Answer with only the requirement. Here is the list of already identified requirements:" + req
         llm_result = await self._model_client.create(
             messages=[
                     UserMessage(content=prompt, source=self.id.key),
@@ -41,19 +41,21 @@ class GeneratorAgent(BDITalker):
 
         elif message.illocution == "tell" and message.content.startswith("req"):
             self.log("List of requirements received, as a literal= " + message.content)
-            tmp = utils.extract_list_from_req_lit(message.content)
-            print("Extraction as a list (len "+ str(len(tmp)) +"): " + str(tmp))
-            self.l = tmp
-            self.log(str(len(self.l)) + " requirements received. " + str(self.l))
+            self.list_req = utils.extract_list_from_req_lit(message.content)
+            print("Extraction as a list (len "+ str(len(self.list_req)) +"): " + str(self.list_req))
+            if len(self.list_req) == 0:
+                self.str_req = "None"
+            else:
+                self.str_req = ' ; '.join([str(s) for s in self.list_req])
+            self.log(str(len(self.list_req)) + " requirements received. " + str(self.list_req))
 
         elif message.illocution == "achieve" and message.content == "generate":
             self.log("Request to generate.")
-            response = await self.run_prompt(self.spec, ctx)
+            response = await self.run_prompt(self.spec, self.str_req)
             self.log("Response: " + response)
             await self.tell(message_module.asp_message_to_manager, "new_req(\"" + aa_utils.filter_quotes(str(response)) + "\")",
                             message_module.asp_message_to_generator)
         else:
             self.log("This message could not be handled: "+ str(message))
-
 
 

@@ -53,7 +53,7 @@ async def main():
     await CompletenessEvaluatorAgent.register(
         autogen_runtime,
         type=message.asp_message_to_completeness_evaluator,
-        factory=lambda: CompletenessEvaluatorAgent("test completeness evaluator agent"),
+        factory=lambda: CompletenessEvaluatorAgent("test completeness evaluator agent", model_client=model_client), 
     )
 
     await GeneratorAgent.register(
