@@ -13,10 +13,10 @@
     .print("Considering Java", X) ;
     .send(llm_dealer, achieve, request("has_pattern_matching_for_instanceof", X)).
 
-+has_pattern_matching_for_instanceof(X, "Yes"): java_version(X) <-
++info("has_pattern_matching_for_instanceof", X, "Yes"): java_version(X) <-
     .print("Ok, we can use pattern matching with instanceof.").
 
-+has_pattern_matching_for_instanceof(X, "No"): java_version(X) <-
++info("has_pattern_matching_for_instanceof", X, "No"): java_version(X) <-
     .print("Warning: we CANNOT use pattern matching with instanceof.").
 
     +has_pattern_matching_for_instanceof(X, B): java_version(X) <-

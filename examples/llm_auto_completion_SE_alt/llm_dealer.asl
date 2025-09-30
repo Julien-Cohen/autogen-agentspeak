@@ -4,10 +4,8 @@
     .my_name(N) ;
     .print("hello from", N).
 
-+!respond(DEST,INFO) <- .send(DEST, tell, INFO).
-
 +!request("has_pattern_matching_for_instanceof", V)[source(X)] : has_pattern_matching_for_instanceof(V, B) <-
-    !respond(X,has_pattern_matching_for_instanceof(V,B)).
+    .send(X, tell, info("has_pattern_matching_for_instanceof", V,B)).
 
 +!request("has_pattern_matching_for_instanceof", V)[source(X)] : not has_pattern_matching_for_instanceof(V,_) <-
     .prompt(has_pattern_matching_for_instanceof(V));
@@ -19,4 +17,4 @@
 +has_pattern_matching_for_instanceof(V, B) : respond_to(D) <-
     .print("response received from llm, going to respond to", D);
     -respond_to(D) ;
-    !respond(D,has_pattern_matching_for_instanceof(V, B)).
+    .send(D,tell, info("has_pattern_matching_for_instanceof",V, B)).
