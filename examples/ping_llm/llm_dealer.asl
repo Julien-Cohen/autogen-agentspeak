@@ -14,4 +14,4 @@
 +nb_planets(X)[source(llm)] : respond_to(D) <-
     .print("response received from llm, going to respond to", D);
     -respond_to(D) ;
-    .autogen_send(D,tell,nb_planets(X)).
+    .send(D,tell,nb_planets(X)).

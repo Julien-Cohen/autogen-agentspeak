@@ -4,7 +4,7 @@
     .my_name(N) ;
     .print("hello from", N).
 
-+!respond(DEST,INFO) <- .autogen_send(DEST, tell, INFO).
++!respond(DEST,INFO) <- .send(DEST, tell, INFO).
 
 +!request_has_pattern_matching_for_instanceof(V)[source(X)] : has_pattern_matching_for_instanceof(V) <-
     !respond(X,has_pattern_matching_for_instanceof(V)).

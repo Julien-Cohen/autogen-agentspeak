@@ -6,7 +6,7 @@
     .my_name(N) ;
     .print("hello from", N).
 
-+!respond(DEST,INFO) <- .autogen_send(DEST, tell, INFO).
++!respond(DEST,INFO) <- .send(DEST, tell, INFO).
 
 +!request_nb_planets[source(X)] : nb_planets(N) <-
     !respond(X,nb_planets(N)).

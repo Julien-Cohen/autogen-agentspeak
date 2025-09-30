@@ -24,6 +24,7 @@ class CatalogEntry:
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 # Warning: github repository for spade-bdi is stuck at v0.1.4 while on Pypi 0.3.2
+# most up-to-date version: https://github.com/javipalanca/spade_bdi
 def parse_literal(msg):
     functor = msg.split("(")[0]
 
@@ -39,12 +40,18 @@ def parse_literal(msg):
             args = ast.literal_eval(args)
 
         def recursion(arg):
-            if isinstance(arg, list) or isinstance(arg, tuple):
+            if isinstance(arg, list):
                 return tuple(recursion(i) for i in arg)
             return arg
-        r = recursion(args)
 
-        new_args = r if isinstance(r, tuple) else (r,)
+        #begin patch
+        r = recursion(args)
+        if isinstance(r, tuple):
+            new_args = r
+        else:
+            new_args = (r,)
+        #new_args = (recursion(args),)
+        #end patch
 
     else:
         new_args = ""
@@ -79,7 +86,7 @@ class BDIAgent(RoutedAgent):
                 yield
 
             @actions.add_procedure(
-                ".autogen_send",
+                ".send",
                 (
                         agentspeak.Literal,
                         agentspeak.Literal,
@@ -98,7 +105,7 @@ class BDIAgent(RoutedAgent):
                 ))
 
             @actions.add_procedure(
-                ".autogen_send_plan",
+                ".send_plan",
                 (
                         agentspeak.Literal,
                         agentspeak.Literal,

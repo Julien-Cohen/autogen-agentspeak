@@ -5,4 +5,4 @@
 
 +sender_alive[source(S)] <-
     .print("new belief : the sender is alive (from", S, ")");
-    .autogen_send(S, tell, pong).
+    .send(S, tell, pong).

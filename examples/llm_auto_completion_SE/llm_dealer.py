@@ -11,7 +11,7 @@ import autogen_agentspeak.utils as aa_utils
 
 
 
-@type_subscription(topic_type=message.asp_message_rcv)
+@type_subscription(topic_type=message.asp_message_dealer)
 class LLMDealerAgent(autogen_agentspeak.bdi.BDIAgent):
 
     async def run_prompt(self, subject: agentspeak.Literal, v:int):

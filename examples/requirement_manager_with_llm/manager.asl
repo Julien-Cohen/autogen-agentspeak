@@ -15,20 +15,20 @@
 
 +!build : spec(S) & req(L) <-
     .print("List of requirements found. Going to ask for completeness.", L) ;
-    .autogen_send(to_completeness_evaluator, tell, spec(S)) ;
-    .autogen_send(to_completeness_evaluator, tell, req(L)) ;
-    .autogen_send(to_completeness_evaluator, achieve, evaluate).
+    .send(to_completeness_evaluator, tell, spec(S)) ;
+    .send(to_completeness_evaluator, tell, req(L)) ;
+    .send(to_completeness_evaluator, achieve, evaluate).
 
 +completeness(true) : req(L) & from(F)<-
     .print("List of requirements complete:", L) ;
     .print("Sent to", F);
-    .autogen_send(F, tell, req(L)).
+    .send(F, tell, req(L)).
 
 +completeness(false) : spec(S) & req(L) <-
     .print("List of requirements not complete") ;
-    .autogen_send(to_generator, tell, spec(S)) ;
-    .autogen_send(to_generator, tell, req(L)) ;
-    .autogen_send(to_generator, achieve, generate).
+    .send(to_generator, tell, spec(S)) ;
+    .send(to_generator, tell, req(L)) ;
+    .send(to_generator, achieve, generate).
 
 +new_req(N) : req(L) <-
     .print("New requirement received:", N) ;
