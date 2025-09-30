@@ -9,4 +9,9 @@
     .wait(1000);
     .print("Sent.").
 
+# FIXME : the following does not work
+# say(true)
+# say(True)
+# say(blue)
+# say("Hello","World")
 
