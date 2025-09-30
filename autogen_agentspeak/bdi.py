@@ -44,7 +44,14 @@ def parse_literal(msg):
                 return tuple(recursion(i) for i in arg)
             return arg
 
-        new_args = (recursion(args),)
+        #begin patch
+        r = recursion(args)
+        if isinstance(r, tuple):
+            new_args = r
+        else:
+            new_args = (r,)
+        #new_args = (recursion(args),)
+        #end patch
 
     else:
         new_args = ""

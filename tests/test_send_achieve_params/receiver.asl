@@ -3,5 +3,5 @@
 +!start <-
     .print("hello from receiver").
 
-+!say(X) <-
-    .print("I say :", X).
++!say(X, Y) <-
+    .print("I say :", X, Y).
