@@ -24,6 +24,7 @@ class CatalogEntry:
 
 # from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
 # Warning: github repository for spade-bdi is stuck at v0.1.4 while on Pypi 0.3.2
+# most up-to-date version: https://github.com/javipalanca/spade_bdi
 def parse_literal(msg):
     functor = msg.split("(")[0]
 
