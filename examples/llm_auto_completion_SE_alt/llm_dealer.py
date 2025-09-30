@@ -27,7 +27,7 @@ class LLMDealerAgent(autogen_agentspeak.bdi.BDIAgent):
             response = llm_result.content
             try:
                 b= aa_utils.parse_bool(response)
-                s = "has_pattern_matching_for_instanceof(" + str(v) +"," + ("True" if b else "Talse") + ")"
+                s = "has_pattern_matching_for_instanceof(" + str(v) +"," + ("\"Yes\"" if b else "\"No\"") + ")"
 
                 (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
                 m = agentspeak.Literal(functor, args)
