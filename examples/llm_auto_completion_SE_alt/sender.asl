@@ -11,7 +11,7 @@
 +!do_request : java_version(X) <-
     .print("I received a request.");
     .print("Considering Java", X) ;
-    .send(llm_dealer, achieve, request_has_pattern_matching_for_instanceof(X)).
+    .send(llm_dealer, achieve, request("has_pattern_matching_for_instanceof", X)).
 
 +has_pattern_matching_for_instanceof(X, "Yes"): java_version(X) <-
     .print("Ok, we can use pattern matching with instanceof.").

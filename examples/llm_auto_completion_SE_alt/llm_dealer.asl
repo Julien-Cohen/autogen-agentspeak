@@ -6,10 +6,10 @@
 
 +!respond(DEST,INFO) <- .send(DEST, tell, INFO).
 
-+!request_has_pattern_matching_for_instanceof(V)[source(X)] : has_pattern_matching_for_instanceof(V, B) <-
++!request("has_pattern_matching_for_instanceof", V)[source(X)] : has_pattern_matching_for_instanceof(V, B) <-
     !respond(X,has_pattern_matching_for_instanceof(V,B)).
 
-+!request_has_pattern_matching_for_instanceof(V)[source(X)] : not has_pattern_matching_for_instanceof(V) <-
++!request("has_pattern_matching_for_instanceof", V)[source(X)] : not has_pattern_matching_for_instanceof(V) <-
     .prompt(has_pattern_matching_for_instanceof(V));
     +respond_to(X).
 
