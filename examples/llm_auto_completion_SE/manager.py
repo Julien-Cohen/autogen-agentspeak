@@ -5,7 +5,7 @@ import message as message_module
 
 import autogen_agentspeak.bdi
 
-@type_subscription(topic_type=message_module.asp_message_manager)
+@type_subscription(topic_type=message_module.asp_message_send)
 class ManagerAgent(autogen_agentspeak.bdi.BDIAgent):
 
     def __init__(self, descr):

@@ -11,7 +11,7 @@ import autogen_agentspeak.utils as aa_utils
 
 
 
-@type_subscription(topic_type=message.asp_message_rcv)
+@type_subscription(topic_type=message.asp_message_dealer)
 class LLMDealerAgent(autogen_agentspeak.bdi.BDIAgent):
 
     async def run_prompt(self, subject: agentspeak.Literal, v:int):
@@ -23,18 +23,16 @@ class LLMDealerAgent(autogen_agentspeak.bdi.BDIAgent):
                 ],
                 cancellation_token=None,
             )
-            print("answer received")
             response = llm_result.content
             try:
                 b= aa_utils.parse_bool(response)
-                s = "has_pattern_matching_for_instanceof(" + str(v) +"," + ("\"Yes\"" if b else "\"No\"") + ")"
+                s = ("" if b else "~") + "has_pattern_matching_for_instanceof(" + str(v) + ")"
 
                 (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
                 m = agentspeak.Literal(functor, args)
                 tagged_m = m.with_annotation(
                     agentspeak.Literal("source", (agentspeak.Literal("llm"),))
                     )
-                print (tagged_m)
                 self.asp_agent.call(agentspeak.Trigger.addition, agentspeak.GoalType.belief, tagged_m, agentspeak.runtime.Intention())
                 self.env.run()
 

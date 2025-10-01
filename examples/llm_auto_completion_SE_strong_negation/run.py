@@ -6,7 +6,7 @@ from autogen_core import SingleThreadedAgentRuntime, TopicId
 
 import message
 from llm_dealer import LLMDealerAgent
-from sender import SenderAgent
+from manager import ManagerAgent
 
 import autogen_agentspeak.bdi
 
@@ -25,14 +25,14 @@ async def main():
     # (AutoGen creates agents only when needed for message delivery.)
     await LLMDealerAgent.register(
         autogen_runtime,
-        type=message.asp_message_rcv,
+        type=message.asp_message_dealer,
         factory=lambda: LLMDealerAgent("test receiver agent", model_client=model_client),
     )
 
-    await SenderAgent.register(
+    await ManagerAgent.register(
         autogen_runtime,
-        type=message.asp_message_send,
-        factory=lambda: SenderAgent("test sender agent"),
+        type=message.asp_message_manager,
+        factory=lambda: ManagerAgent("test sender agent"),
     )
 
     # Start AutoGen runtime
@@ -45,10 +45,10 @@ async def main():
             content="do_request",
             sender = "main"
         ),
-        topic_id=TopicId(message.asp_message_send, source="default"),
+        topic_id=TopicId(message.asp_message_manager, source="default"),
     )
 
-    await asyncio.sleep(10) # otherwise, autogen stops before an answer from the LLM is received.
+    await asyncio.sleep(5) # otherwise, autogen stops before an answer from the LLM is received.
     await autogen_runtime.stop_when_idle()
     await model_client.close()
 

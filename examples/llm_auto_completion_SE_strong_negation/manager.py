@@ -5,11 +5,11 @@ import message as message_module
 
 import autogen_agentspeak.bdi
 
-@type_subscription(topic_type=message_module.asp_message_send)
-class SenderAgent(autogen_agentspeak.bdi.BDIAgent):
+@type_subscription(topic_type=message_module.asp_message_manager)
+class ManagerAgent(autogen_agentspeak.bdi.BDIAgent):
 
     def __init__(self, descr):
-        super().__init__(descr, "sender.asl")
+        super().__init__(descr, "manager.asl")
 
     @message_handler
     async def handle_message(self, message: autogen_agentspeak.bdi.AgentSpeakMessage, ctx: MessageContext) -> None:
