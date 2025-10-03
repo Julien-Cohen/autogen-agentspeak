@@ -22,40 +22,23 @@ class CatalogEntry:
     arity: int
     meaning: str
 
-# from https://github.com/sfp932705/spade_bdi/blob/master/spade_bdi/bdi.py
-# Warning: github repository for spade-bdi is stuck at v0.1.4 while on Pypi 0.3.2
-# most up-to-date version: https://github.com/javipalanca/spade_bdi
-def parse_literal(msg):
-    functor = msg.split("(")[0]
-
-    if "(" in msg:
-        args = msg.split("(")[1]
-        args = args.split(")")[0]
-
-        x = re.search("^_X_*", args)
-
-        if x is not None:
-            args = agentspeak.Var()
-        else:
-            args = ast.literal_eval(args)
-
-        def recursion(arg):
-            if isinstance(arg, list):
-                return tuple(recursion(i) for i in arg)
-            return arg
-
-        #begin patch
-        r = recursion(args)
-        if isinstance(r, tuple):
-            new_args = r
-        else:
-            new_args = (r,)
-        #new_args = (recursion(args),)
-        #end patch
-
+def lit_of_str(s:str)-> agentspeak.Literal:
+    l = s.split(sep="(", maxsplit=1)
+    symb = l[0]
+    if len(l) == 1 :
+        return agentspeak.Literal(symb)
     else:
-        new_args = ""
-    return functor, new_args
+        rest = l[1]
+        assert(rest.endswith(")"))
+        args=rest.removesuffix(")")
+        if args.startswith("_X_"):
+            return agentspeak.Literal(symb, agentspeak.Var)
+        else :
+            t= ast.literal_eval(args)
+            if isinstance(t, tuple):
+                return agentspeak.Literal(symb, t)
+            else:
+                return agentspeak.Literal(symb, (t,))
 
 
 
@@ -213,9 +196,9 @@ class BDIAgent(RoutedAgent):
 
         else:
             # Sends a literal
-            functor, args = parse_literal(msg.content)
-
-            message = agentspeak.Literal(functor, args)
+            #functor, args = parse_literal(msg.content)
+            #message = agentspeak.Literal(functor, args)
+            message=lit_of_str(msg.content)
 
         message = agentspeak.freeze(message, intention.scope, {})
 

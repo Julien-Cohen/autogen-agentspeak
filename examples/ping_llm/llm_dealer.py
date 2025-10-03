@@ -7,6 +7,7 @@ import agentspeak
 import asyncio
 
 import message
+from autogen_agentspeak.bdi import lit_of_str
 
 
 @type_subscription(topic_type=message.asp_message_rcv)
@@ -26,8 +27,7 @@ class ReceiverAgent(autogen_agentspeak.bdi.BDIAgent):
                 v=int(response)
                 s = "nb_planets(" + str(v) + ")"
 
-                (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
-                m = agentspeak.Literal(functor, args)
+                m=lit_of_str(s)
                 tagged_m = m.with_annotation(
                     agentspeak.Literal("source", (agentspeak.Literal("llm"),))
         )

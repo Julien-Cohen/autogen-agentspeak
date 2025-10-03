@@ -8,7 +8,7 @@ import asyncio
 
 import message
 import autogen_agentspeak.utils as aa_utils
-
+from autogen_agentspeak.bdi import lit_of_str
 
 
 @type_subscription(topic_type=message.asp_message_dealer)
@@ -28,8 +28,7 @@ class LLMDealerAgent(autogen_agentspeak.bdi.BDIAgent):
                 b= aa_utils.parse_bool(response)
                 s = ("" if b else "~") + "has_pattern_matching_for_instanceof(" + str(v) + ")"
 
-                (functor, args) = autogen_agentspeak.bdi.parse_literal(s)
-                m = agentspeak.Literal(functor, args)
+                m=lit_of_str(s)
                 tagged_m = m.with_annotation(
                     agentspeak.Literal("source", (agentspeak.Literal("llm"),))
                     )
