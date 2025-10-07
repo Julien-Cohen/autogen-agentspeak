@@ -22,8 +22,11 @@ model_client = OpenAIChatCompletionClient(
 
 
 # Current state
-This is work in progress. See the examples and tests to lear how to use.
+This is work in progress. See the examples and tests to learn how to use.
 
-# Credits
-The source code of this module is partly based on the source code of [spade-bdi](https://github.com/sfp932705/spade_bdi) (see `bdi.py`).
+# Licence
+Eclipse Public License - v 2.0
+
+THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE PUBLIC LICENSE (“AGREEMENT”). ANY USE, REPRODUCTION OR DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT'S ACCEPTANCE OF THIS AGREEMENT. 
+
 
